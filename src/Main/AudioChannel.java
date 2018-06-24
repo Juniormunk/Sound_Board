@@ -19,6 +19,7 @@ public class AudioChannel
 	private ArrayList<File> audioFiles;
 	public MediaPlayer player;
 	public MediaPlayer nextPlayer;
+	public MediaView media;
 
 	public AudioChannel(String name)
 	{
@@ -28,62 +29,50 @@ public class AudioChannel
 	// plays the sound once
 	public void playSound()
 	{
-		Runnable myRunnable = new Runnable()
+		Platform.runLater(new Runnable()
 		{
 
+			@Override
 			public void run()
 			{
-				Platform.runLater(new Runnable()
+				ArrayList<MediaPlayer> players = new ArrayList<MediaPlayer>();
+				for (File file : audioFiles)
 				{
 
-					@Override
-					public void run()
+					Media soundFile1 = new Media("file:/" + file.getPath().toString().replace('\\', '/'));
+					MediaPlayer player = new MediaPlayer(soundFile1);
+					players.add(player);
+
+				}
+
+				media = new MediaView(players.get(0));
+				// mediaview1 = new MediaView(players.get(0));
+				for (int j = 0; j < players.size(); j++)
+				{
+					final MediaPlayer player = players.get(j);
+					final MediaPlayer nextPlayer = players.get((j + 1) % players.size());
+
+					player.setOnEndOfMedia(new Runnable()
 					{
-						ArrayList<MediaPlayer> players = new ArrayList<MediaPlayer>();
-						for (File file : audioFiles)
+						@Override
+						public void run()
 						{
-
-							Media soundFile1 = new Media("file:/" + file.getPath().toString().replace('\\', '/'));
-							MediaPlayer player = new MediaPlayer(soundFile1);
-							players.add(player);
-
-						}
-
-						MediaView mediaview = new MediaView(players.get(0));
-						// mediaview1 = new MediaView(players.get(0));
-						for (int j = 0; j < players.size(); j++)
-						{
-							final MediaPlayer player = players.get(j);
-							final MediaPlayer nextPlayer = players.get((j + 1) % players.size());
-
-							player.setOnEndOfMedia(new Runnable()
+							if (repeat)
 							{
-								@Override
-								public void run()
-								{
-									if(repeat)
-									{
-										nextPlayer.seek(Duration.ZERO);
-									}
-									mediaview.setMediaPlayer(nextPlayer);
-									nextPlayer.play();
-
-								}
-							});
+								nextPlayer.seek(Duration.ZERO);
+							}
+							media.setMediaPlayer(nextPlayer);
+							nextPlayer.play();
 
 						}
-						mediaview.setMediaPlayer(players.get(0));
-						mediaview.getMediaPlayer().play();
-						
+					});
 
-					}
-				});
+				}
+				media.setMediaPlayer(players.get(0));
+				media.getMediaPlayer().play();
+
 			}
-		};
-
-		Thread thread = new Thread(myRunnable);
-		thread.start();
-
+		});
 	}
 
 	public boolean isPlaying()

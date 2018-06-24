@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 public class Main extends Application
 {
 	public static Stage stage;
+	public static Stage newAudio;
 	public static ArrayList<AudioFile> audioFiles = new ArrayList<AudioFile>();
 
 	public static void main(String[] args)
@@ -31,24 +32,44 @@ public class Main extends Application
 		Controller controller = loader1.getController();
 
 		stage = defaultStage;
+
 		
-		
-		
-		
+		FXMLLoader loader2 = new FXMLLoader(getClass().getResource("Test.fxml"));
+		Scene primary2 = new Scene(loader2.load());
+		// Controller controller = loader1.getController();
+		newAudio.setScene(primary2);
+		newAudio.show();
+		newAudio.setResizable(false);
+		@SuppressWarnings("unused")
+		NewAudioController controller2 = loader2.getController();
 		
 		
 		
 		
 		ArrayList<File> files = new ArrayList<File>();
 		
-		files.add(new File("C:/Users/camco/Documents/air.mp3"));
-		files.add(new File("C:/Users/camco/Documents/crik.mp3"));
+		files.add(new File("C:/Users/Cameron/Documents/air.mp3"));
+		files.add(new File("C:/Users/Cameron/Documents/crik.mp3"));
 		
 		AudioChannel channel = new AudioChannel("Test");
+		
 		
 		channel.setAudioFiles(files);
 		
 		channel.playSound();
+		
+		ArrayList<File> files2 = new ArrayList<File>();
+		
+		files2.add(new File("C:/Users/Cameron/Documents/crik.mp3"));
+		files2.add(new File("C:/Users/Cameron/Documents/air.mp3"));
+		
+		AudioChannel channel2 = new AudioChannel("Test");
+		
+		
+		channel2.setAudioFiles(files2);
+		
+		channel2.playSound();
+		
 
 		// controller.channels.getItems().addAll("Okay?", "hey");
 		// controller.audiofiles.getItems().addAll("test","Test1");

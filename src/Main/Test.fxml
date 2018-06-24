@@ -12,10 +12,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.CheckListView?>
+<?import javafx.scene.control.SpinnerValueFactory.DoubleSpinnerValueFactory?>
 
 <AnchorPane fx:id="volume" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Main.Controller">
    <children>
-      <ListView fx:id="channels" layoutX="25.0" layoutY="63.0" prefHeight="675.0" prefWidth="225.0" />
+      <ListView fx:id="channels" layoutX="25.0" layoutY="63.0" onMouseClicked="#selectChannel" prefHeight="675.0" prefWidth="225.0" />
       <MenuBar layoutY="2.0" prefHeight="25.0" prefWidth="1000.0">
         <menus>
           <Menu mnemonicParsing="false" text="File">
@@ -40,12 +41,16 @@
             <Font name="System Bold" size="20.0" />
          </font>
       </Text>
-      <Button fx:id="addChannel" layoutX="54.0" layoutY="749.0" mnemonicParsing="false" prefHeight="10.0" prefWidth="60.0" text="Add" />
-      <Button fx:id="removeChannel" layoutX="161.0" layoutY="749.0" mnemonicParsing="false" prefHeight="10.0" prefWidth="60.0" text="Remove" />
-      <Slider layoutX="262.0" layoutY="63.0" majorTickUnit="10.0" orientation="VERTICAL" prefHeight="675.0" prefWidth="21.0" showTickLabels="true" showTickMarks="true" style="-fx-color: #4a9be8; -fx-control-inner-background: #9e9e9e;" value="100.0" />
+      <Button fx:id="addChannel" layoutX="47.0" layoutY="749.0" mnemonicParsing="false" text="Add" />
+      <Button fx:id="removeChannel" layoutX="154.0" layoutY="749.0" mnemonicParsing="false" text="Remove" />
+      <Slider layoutX="265.0" layoutY="63.0" majorTickUnit="10.0" orientation="VERTICAL" prefHeight="675.0" prefWidth="21.0" showTickLabels="true" showTickMarks="true" style="-fx-color: #4a9be8; -fx-control-inner-background: #9e9e9e;" value="100.0" />
       <CheckBox fx:id="repeat" layoutX="304.0" layoutY="63.0" mnemonicParsing="false" text="Repeat" />
       <Text layoutX="304.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Delay :" wrappingWidth="73.99999350309372" />
-      <Spinner fx:id="delay" editable="true" layoutX="304.0" layoutY="104.0" prefHeight="25.0" prefWidth="74.0" />
+      <Spinner fx:id="delay" editable="true" layoutX="304.0" layoutY="104.0" prefHeight="25.0" prefWidth="74.0">
+      <valueFactory>
+        <SpinnerValueFactory.DoubleSpinnerValueFactory min="-1000" max="1000" initialValue="0" amountToStepBy=".1"/>
+      </valueFactory>
+      </Spinner>
       <CheckListView fx:id="audiofiles" layoutX="750.0" layoutY="63.0" prefHeight="675.0" prefWidth="225.0" />
       <Text layoutX="811.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Audio Files" textAlignment="CENTER">
          <font>
@@ -58,7 +63,7 @@
             <Font name="System Bold" size="20.0" />
          </font>
       </Text>
-      <Button fx:id="addAudio" layoutX="779.0" layoutY="749.0" mnemonicParsing="false" onMouseClicked="#addAudioFile" prefHeight="10.0" prefWidth="60.0" text="Add" />
-      <Button fx:id="removeAudio" layoutX="886.0" layoutY="749.0" mnemonicParsing="false" prefHeight="10.0" prefWidth="60.0" text="Remove" />
+      <Button fx:id="addAudio" layoutX="772.0" layoutY="749.0" mnemonicParsing="false" onMouseClicked="#addAudioFile" text="Add" />
+      <Button fx:id="removeAudio" layoutX="879.0" layoutY="749.0" mnemonicParsing="false" text="Remove" />
    </children>
 </AnchorPane>

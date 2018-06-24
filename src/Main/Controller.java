@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -29,12 +30,13 @@ public class Controller
 	CheckBox repeat;
 
 	@FXML
-	Spinner<?> delay;
+	Spinner delay;
 
 	@SuppressWarnings("rawtypes")
 	@FXML
 	ListView audiofiles;
 
+	
 	@SuppressWarnings("unchecked")
 	@FXML
 	void addAudioFile(MouseEvent event)
@@ -61,6 +63,11 @@ public class Controller
 		}
 		// AudioChannel channel = new AudioChannel("Test");
 		// channel.playSound();
+	}
+	@FXML
+	void selectChannel(MouseEvent event)
+	{
+		
 	}
 
 }
