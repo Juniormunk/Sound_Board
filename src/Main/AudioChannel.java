@@ -17,12 +17,11 @@ public class AudioChannel
 	private int volume;
 	private double delay;
 	private ArrayList<File> audioFiles;
-	public MediaPlayer player;
-	public MediaPlayer nextPlayer;
-	public MediaView media;
+	private MediaView media;
 
 	public AudioChannel(String name)
 	{
+		System.out.println(name);
 		this.name = name;
 	}
 
@@ -133,5 +132,9 @@ public class AudioChannel
 	public void setAudioFiles(ArrayList<File> audioFiles)
 	{
 		this.audioFiles = audioFiles;
+	}
+	public String toString()
+	{
+		return this.name;
 	}
 }

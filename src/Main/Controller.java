@@ -53,13 +53,14 @@ public class Controller
 		{
 			for (File file : files)
 			{
-				if (!Main.audioFiles.contains(new AudioFile(file)))
+				if (!Main.availableFiles.contains(new AudioFile(file)))
 				{
-					Main.audioFiles.add(new AudioFile(file));
+					Main.availableFiles.add(new AudioFile(file));
 
 				}
 			}
-			audiofiles.getItems().addAll(Main.audioFiles);
+			audiofiles.getItems().clear();
+			audiofiles.getItems().addAll(Main.availableFiles);
 		}
 		// AudioChannel channel = new AudioChannel("Test");
 		// channel.playSound();
@@ -69,5 +70,17 @@ public class Controller
 	{
 		
 	}
+	@SuppressWarnings("unchecked")
+	void refreshAudioChennels()
+	{
+		channels.getItems().clear();
+		channels.getItems().addAll(Main.audioChannels);
+	}
+	
+    @FXML
+    void addChannel(MouseEvent event) 
+    {
+    	Main.newAudio.show();
+    }
 
 }
