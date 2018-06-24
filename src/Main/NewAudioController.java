@@ -24,6 +24,7 @@ public class NewAudioController
 			Main.audioChannels.add(new AudioChannel(textField.getText()));
 			Main.controller.refreshAudioChennels();
 			Main.newAudio.close();
+			textField.clear();
 		}
 	}
 
@@ -31,6 +32,8 @@ public class NewAudioController
 	void close(MouseEvent event)
 	{
 		Main.newAudio.close();
+		textField.clear();
+
 	}
 
 }

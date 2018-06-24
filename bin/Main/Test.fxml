@@ -51,7 +51,7 @@
         <SpinnerValueFactory.DoubleSpinnerValueFactory amountToStepBy=".1" initialValue="0" max="1000" min="-1000" />
       </valueFactory>
       </Spinner>
-      <CheckListView fx:id="audiofiles" layoutX="750.0" layoutY="63.0" prefHeight="675.0" prefWidth="225.0" />
+      <CheckListView fx:id="audiofiles" layoutX="750.0" layoutY="63.0" onMouseClicked="#selectAudioFiles" prefHeight="675.0" prefWidth="225.0" />
       <Text layoutX="811.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Audio Files" textAlignment="CENTER">
          <font>
             <Font name="System Bold" size="20.0" />

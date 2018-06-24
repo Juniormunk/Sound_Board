@@ -18,6 +18,7 @@ public class AudioChannel
 	private double delay;
 	private ArrayList<File> audioFiles;
 	private MediaView media;
+	ArrayList<MediaPlayer> players;
 
 	public AudioChannel(String name)
 	{
@@ -34,7 +35,7 @@ public class AudioChannel
 			@Override
 			public void run()
 			{
-				ArrayList<MediaPlayer> players = new ArrayList<MediaPlayer>();
+				players = new ArrayList<MediaPlayer>();
 				for (File file : audioFiles)
 				{
 
@@ -112,6 +113,10 @@ public class AudioChannel
 	public void setVolume(int volume)
 	{
 		this.volume = volume;
+		for (MediaPlayer player : players)
+		{
+			player.setVolume(volume);
+		}
 	}
 
 	public double getDelay()
@@ -129,10 +134,12 @@ public class AudioChannel
 		return audioFiles;
 	}
 
+
 	public void setAudioFiles(ArrayList<File> audioFiles)
 	{
 		this.audioFiles = audioFiles;
 	}
+
 	public String toString()
 	{
 		return this.name;

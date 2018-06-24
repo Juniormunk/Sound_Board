@@ -16,11 +16,11 @@ public class Main extends Application
 	public static ArrayList<AudioChannel> audioChannels = new ArrayList<AudioChannel>();
 	public static Controller controller;
 	
-//	private String test1 = "C:/Users/Cameron/Documents/air.mp3";
-//	private String test2 = "C:/Users/Cameron/Documents/crik.mp3";
+	private String test1 = "C:/Users/Cameron/Documents/air.mp3";
+	private String test2 = "C:/Users/Cameron/Documents/crik.mp3";
 	
-	private String test1 = "C:/Users/camco/Documents/air.mp3";
-	private String test2 = "C:/Users/camco/Documents/crik.mp3";
+//	private String test1 = "C:/Users/camco/Documents/air.mp3";
+//	private String test2 = "C:/Users/camco/Documents/crik.mp3";
 
 	public static void main(String[] args)
 	{
@@ -36,7 +36,6 @@ public class Main extends Application
 		defaultStage.setScene(primary);
 		defaultStage.show();
 		defaultStage.setResizable(false);
-		@SuppressWarnings("unused")
 		Controller controller = loader1.getController();
 		
 		Main.controller=controller;
@@ -50,7 +49,6 @@ public class Main extends Application
 		// Controller controller = loader1.getController();
 		newAudio.setScene(primary2);
 		newAudio.setResizable(false);
-		@SuppressWarnings("unused")
 		NewAudioController controller2 = loader2.getController();
 		
 		
