@@ -1,18 +1,12 @@
 package Main;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import javafx.application.Application;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 
 public class Main extends Application
 {
@@ -51,19 +45,14 @@ public class Main extends Application
 		{
 			public void onChanged(ListChangeListener.Change<? extends AudioFile> c)
 			{
-				if (Main.controller.selectedChannel != null)
+				if (Main.controller.selectedChannel != null && !Main.controller.selectedChannel.ingnoreChange)
 				{
-					System.out.println(Main.controller.selectedChannel.getName());
 					ArrayList<AudioFile> list = new ArrayList<AudioFile>();
 					list.addAll(Main.controller.audiofiles.getCheckModel().getCheckedItems());
-					int i = 0;
-					for (AudioFile file : list)
-					{
-						file.index = i;
-						i++;
-					}
-
 					Main.controller.selectedChannel.setAudioFiles(list);
+					System.out.println("On Change: "+list);
+
+					
 				}
 
 			}
@@ -81,7 +70,6 @@ public class Main extends Application
 		@SuppressWarnings("unused")
 		NewAudioController controller2 = loader2.getController();
 
-		//
 		// ArrayList<File> files = new ArrayList<File>();
 		//
 		// files.add(new File(test1));

@@ -19,10 +19,10 @@ public class AudioChannel
 	private ArrayList<AudioFile> audioFiles = new ArrayList<AudioFile>();
 	private MediaView media;
 	ArrayList<MediaPlayer> players;
+	boolean ingnoreChange;
 
 	public AudioChannel(String name)
 	{
-		System.out.println(name);
 		this.name = name;
 	}
 

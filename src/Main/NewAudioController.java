@@ -41,6 +41,7 @@ public class NewAudioController
 				Main.controller.refreshAudioChennels();
 				Main.newAudio.close();
 				textField.clear();
+				
 			}
 		}
 	}

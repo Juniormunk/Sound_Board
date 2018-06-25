@@ -44,7 +44,7 @@
       <Button fx:id="addChannel" layoutX="47.0" layoutY="749.0" mnemonicParsing="false" onMouseClicked="#addChannel" text="Add" />
       <Button fx:id="removeChannel" layoutX="154.0" layoutY="749.0" mnemonicParsing="false" text="Remove" />
       <Slider layoutX="265.0" layoutY="63.0" majorTickUnit="10.0" orientation="VERTICAL" prefHeight="675.0" prefWidth="21.0" showTickLabels="true" showTickMarks="true" style="-fx-color: #4a9be8; -fx-control-inner-background: #9e9e9e;" value="100.0" />
-      <CheckBox fx:id="repeat" layoutX="304.0" layoutY="63.0" mnemonicParsing="false" text="Repeat" />
+      <CheckBox fx:id="repeat" layoutX="304.0" layoutY="63.0" mnemonicParsing="false" onAction="#selectRepeat" text="Repeat" />
       <Text layoutX="304.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Delay :" wrappingWidth="73.99999350309372" />
       <Spinner fx:id="delay" editable="true" layoutX="304.0" layoutY="104.0" prefHeight="25.0" prefWidth="74.0">
       <valueFactory>

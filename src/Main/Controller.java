@@ -6,19 +6,15 @@ import java.util.List;
 
 import org.controlsfx.control.CheckListView;
 
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Spinner;
-import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import javafx.util.Callback;
 
 public class Controller
 {
@@ -46,6 +42,8 @@ public class Controller
 
 	AudioChannel selectedChannel;
 
+	AudioChannel lastSelectedChannel;
+
 	ArrayList<AudioFile> list = new ArrayList<AudioFile>();
 
 	@SuppressWarnings("unchecked")
@@ -70,6 +68,14 @@ public class Controller
 
 				}
 			}
+			int i = 0;
+			for (AudioFile file : Main.availableFiles)
+			{
+				file.index = i;
+				i++;
+				// We need not to use this....
+			}
+
 			audiofiles.getItems().clear();
 			audiofiles.getItems().addAll(Main.availableFiles);
 		}
@@ -77,17 +83,33 @@ public class Controller
 		// channel.playSound();
 	}
 
+	@SuppressWarnings("unchecked")
 	@FXML
 	void selectChannel(MouseEvent event)
 	{
 		if (channels.getSelectionModel().getSelectedItem() != null)
 		{
+			lastSelectedChannel = selectedChannel;
 			selectedChannel = (AudioChannel) channels.getSelectionModel().getSelectedItem();
-			deselectAudioFiles();
-			if (selectedChannel.getAudioFiles().size() > 0)
+
+			if (lastSelectedChannel != selectedChannel)
 			{
-				selectAudioFiles(selectedChannel.getAudioFiles());
+				selectedChannel.ingnoreChange = true;
+				audiofiles.getItems().clear();
+				audiofiles.getCheckModel().clearChecks();
+				audiofiles.getItems().addAll(Main.availableFiles);
+				audiofiles.getCheckModel().clearChecks();
+
+				for (AudioFile file : selectedChannel.getAudioFiles())
+				{
+					audiofiles.getCheckModel().check(file.index);
+				}
+
+				repeat.setSelected(selectedChannel.isRepeat());
+
+				selectedChannel.ingnoreChange = false;
 			}
+
 		}
 
 	}
@@ -108,28 +130,12 @@ public class Controller
 	public void selectAudioFiles(MouseEvent event)
 	{
 
-		if (selectedChannel != null && channels.getSelectionModel().getSelectedItem() != null)
-		{
-			System.out.println("Clicked");
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	public void selectAudioFiles(ArrayList<AudioFile> list)
-	{
-		for (AudioFile file : list)
-		{
-			System.out.println(file);
-			audiofiles.getCheckModel().check(file);
-		}
-
 	}
 
 	@SuppressWarnings("unchecked")
 	public void deselectAudioFiles()
 	{
 		audiofiles.getItems().clear();
-		audiofiles.getItems().addAll(Main.availableFiles);
 	}
 
 	@FXML
@@ -138,6 +144,15 @@ public class Controller
 		if (selectedChannel != null)
 		{
 			selectedChannel.playSound();
+		}
+	}
+
+	@FXML
+	void selectRepeat(ActionEvent event)
+	{
+		if(selectedChannel != null)
+		{
+			selectedChannel.setRepeat(repeat.isSelected());
 		}
 	}
 }
