@@ -6,6 +6,7 @@ import java.io.File;
 public class AudioFile extends File
 {
 	boolean selected = false;
+	int index;
 
 	public AudioFile(File file)
 	{

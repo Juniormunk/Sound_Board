@@ -16,7 +16,7 @@ public class AudioChannel
 	private String name;
 	private int volume;
 	private double delay;
-	private ArrayList<File> audioFiles;
+	private ArrayList<AudioFile> audioFiles = new ArrayList<AudioFile>();
 	private MediaView media;
 	ArrayList<MediaPlayer> players;
 
@@ -39,7 +39,7 @@ public class AudioChannel
 				for (File file : audioFiles)
 				{
 
-					Media soundFile1 = new Media("file:/" + file.getPath().toString().replace('\\', '/'));
+					Media soundFile1 = new Media(file.getPath().toString().replace('\\', '/'));
 					MediaPlayer player = new MediaPlayer(soundFile1);
 					players.add(player);
 
@@ -129,13 +129,12 @@ public class AudioChannel
 		this.delay = delay;
 	}
 
-	public ArrayList<File> getAudioFiles()
+	public ArrayList<AudioFile> getAudioFiles()
 	{
 		return audioFiles;
 	}
 
-
-	public void setAudioFiles(ArrayList<File> audioFiles)
+	public void setAudioFiles(ArrayList<AudioFile> audioFiles)
 	{
 		this.audioFiles = audioFiles;
 	}

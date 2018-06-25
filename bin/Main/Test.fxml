@@ -65,5 +65,8 @@
       </Text>
       <Button fx:id="addAudio" layoutX="772.0" layoutY="749.0" mnemonicParsing="false" onMouseClicked="#addAudioFile" text="Add" />
       <Button fx:id="removeAudio" layoutX="879.0" layoutY="749.0" mnemonicParsing="false" text="Remove" />
+      <Button layoutX="362.0" layoutY="287.0" mnemonicParsing="false" text="Pause" />
+      <Button fx:id="Start" layoutX="313.0" layoutY="287.0" mnemonicParsing="false" onMouseClicked="#Start" text="Start" />
+      <Button layoutX="416.0" layoutY="287.0" mnemonicParsing="false" text="Stop" />
    </children>
 </AnchorPane>

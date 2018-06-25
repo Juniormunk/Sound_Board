@@ -3,6 +3,8 @@ package Main;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 
 public class NewAudioController
@@ -25,6 +27,21 @@ public class NewAudioController
 			Main.controller.refreshAudioChennels();
 			Main.newAudio.close();
 			textField.clear();
+		}
+	}
+
+	@FXML
+	void applyKey(KeyEvent event)
+	{
+		if (event.getCode() == KeyCode.ENTER)
+		{
+			if (!textField.getText().equals(""))
+			{
+				Main.audioChannels.add(new AudioChannel(textField.getText()));
+				Main.controller.refreshAudioChennels();
+				Main.newAudio.close();
+				textField.clear();
+			}
 		}
 	}
 
