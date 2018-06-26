@@ -3,6 +3,8 @@ package Main;
 import java.util.ArrayList;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -48,13 +50,101 @@ public class Main extends Application
 				if (Main.controller.selectedChannel != null && !Main.controller.selectedChannel.ingnoreChange)
 				{
 					ArrayList<AudioFile> list = new ArrayList<AudioFile>();
-					list.addAll(Main.controller.audiofiles.getCheckModel().getCheckedItems());
-					Main.controller.selectedChannel.setAudioFiles(list);
-					System.out.println("On Change: "+list);
 
-					
+					list.addAll(Main.controller.audiofiles.getCheckModel().getCheckedItems());
+
+					ArrayList<AudioFile> output = new ArrayList<AudioFile>();
+
+					output = Main.controller.selectedChannel.getAudioFiles();
+
+					for (AudioFile file : list)
+					{
+						if (!output.contains(file))
+						{
+							output.add(file);
+						}
+					}
+
+					Main.controller.selectedChannel.setAudioFiles(output);
+
+					Main.controller.order.getItems().removeAll(Main.controller.order.getItems());
+					Main.controller.order.getItems().addAll(output);
+
+					System.out.println("On Change: " + output);
+
 				}
 
+			}
+		});
+
+		Main.controller.volume.valueProperty().addListener(new ChangeListener<Number>()
+		{
+			public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val)
+			{
+				if (Main.controller.selectedChannel != null)
+				{
+					Main.controller.selectedChannel.setVolume((double) new_val / 100.0);
+				}
+			}
+		});
+
+		Main.controller.channels.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<AudioChannel>()
+		{
+			@Override
+			public void changed(ObservableValue<? extends AudioChannel> observable, AudioChannel oldValue, AudioChannel newValue)
+			{
+				if (newValue == null)
+				{
+					Main.controller.audiofiles.setDisable(true);
+					Main.controller.order.setDisable(true);
+				}
+				if (Main.controller.channels.getSelectionModel().getSelectedItem() != null)
+				{
+					Main.controller.audiofiles.setDisable(false);
+					Main.controller.order.setDisable(false);
+					Main.controller.lastSelectedChannel = Main.controller.selectedChannel;
+					Main.controller.selectedChannel = (AudioChannel) Main.controller.channels.getSelectionModel().getSelectedItem();
+
+					if (Main.controller.lastSelectedChannel != Main.controller.selectedChannel)
+					{
+						Main.controller.selectedChannel.ingnoreChange = true;
+						Main.controller.audiofiles.getItems().clear();
+						Main.controller.audiofiles.getCheckModel().clearChecks();
+						Main.controller.audiofiles.getItems().addAll(Main.availableFiles);
+						Main.controller.audiofiles.getCheckModel().clearChecks();
+
+						for (AudioFile file : Main.controller.selectedChannel.getAudioFiles())
+						{
+							Main.controller.audiofiles.getCheckModel().check(file.index);
+						}
+
+						Main.controller.repeat.setSelected(Main.controller.selectedChannel.isRepeat());
+
+						Main.controller.order.getItems().setAll(Main.controller.selectedChannel.getAudioFiles());
+
+						Main.controller.selectedChannel.ingnoreChange = false;
+					}
+
+				}
+			}
+		});
+
+		Main.controller.order.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<AudioFile>()
+		{
+			@Override
+			public void changed(ObservableValue<? extends AudioFile> observable, AudioFile oldValue, AudioFile newValue)
+			{
+				if(newValue != null)
+				{
+					Main.controller.orderUp.setDisable(false);
+					Main.controller.orderDown.setDisable(false);
+					
+				}
+				else
+				{
+					Main.controller.orderUp.setDisable(true);
+					Main.controller.orderDown.setDisable(true);
+				}
 			}
 		});
 

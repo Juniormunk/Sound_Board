@@ -14,7 +14,7 @@ public class AudioChannel
 	private boolean isPlaying;
 	private boolean repeat;
 	private String name;
-	private int volume;
+	private double volume;
 	private double delay;
 	private ArrayList<AudioFile> audioFiles = new ArrayList<AudioFile>();
 	private MediaView media;
@@ -105,17 +105,21 @@ public class AudioChannel
 		this.name = name;
 	}
 
-	public int getVolume()
+	public double getVolume()
 	{
 		return volume;
 	}
 
-	public void setVolume(int volume)
+	public void setVolume(double volume)
 	{
 		this.volume = volume;
-		for (MediaPlayer player : players)
+		if (media != null && players.size() > 0)
 		{
-			player.setVolume(volume);
+			for (MediaPlayer player : players)
+			{
+				player.setVolume(volume);
+			}
+			media.getMediaPlayer().setVolume(volume);
 		}
 	}
 

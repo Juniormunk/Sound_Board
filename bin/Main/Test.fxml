@@ -14,59 +14,86 @@
 <?import javafx.scene.text.Text?>
 <?import org.controlsfx.control.CheckListView?>
 
-<AnchorPane fx:id="volume" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Main.Controller">
-   <children>
-      <ListView fx:id="channels" layoutX="25.0" layoutY="63.0" onMouseClicked="#selectChannel" prefHeight="675.0" prefWidth="225.0" />
-      <MenuBar layoutY="2.0" prefHeight="25.0" prefWidth="1000.0">
-        <menus>
-          <Menu mnemonicParsing="false" text="File">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Close" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Edit">
-            <items>
-              <MenuItem mnemonicParsing="false" text="Delete" />
-            </items>
-          </Menu>
-          <Menu mnemonicParsing="false" text="Help">
-            <items>
-              <MenuItem mnemonicParsing="false" text="About" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-      <Text layoutX="64.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Audio Channels" textAlignment="CENTER">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Main.Controller">
+	<children>
+		<ListView fx:id="channels" layoutX="25.0" layoutY="63.0" onMouseClicked="#selectChannel" prefHeight="675.0" prefWidth="225.0" />
+		<MenuBar layoutY="2.0" prefHeight="25.0" prefWidth="1000.0">
+			<menus>
+				<Menu mnemonicParsing="false" text="File">
+					<items>
+						<MenuItem mnemonicParsing="false" text="Close" />
+					</items>
+				</Menu>
+				<Menu mnemonicParsing="false" text="Edit">
+					<items>
+						<MenuItem mnemonicParsing="false" text="Delete" />
+					</items>
+				</Menu>
+				<Menu mnemonicParsing="false" text="Help">
+					<items>
+						<MenuItem mnemonicParsing="false" text="About" />
+					</items>
+				</Menu>
+			</menus>
+		</MenuBar>
+		<Text layoutX="64.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Audio Channels" textAlignment="CENTER">
+			<font>
+				<Font name="System Bold" size="20.0" />
+			</font>
+		</Text>
+		<Button fx:id="addChannel" layoutX="55.0" layoutY="749.0" mnemonicParsing="false" onMouseClicked="#addChannel" text="Add" />
+		<Button fx:id="removeChannel" layoutX="162.0" layoutY="749.0" mnemonicParsing="false" text="Remove" />
+		<Slider fx:id="volume" layoutX="265.0" layoutY="63.0" majorTickUnit="10.0" orientation="VERTICAL" prefHeight="675.0" prefWidth="21.0" showTickLabels="true" showTickMarks="true" style="-fx-color: #4a9be8; -fx-control-inner-background: #9e9e9e;" value="100.0" />
+		<CheckBox fx:id="repeat" layoutX="304.0" layoutY="63.0" mnemonicParsing="false" onAction="#selectRepeat" text="Repeat" />
+		<Text layoutX="304.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Delay :" wrappingWidth="73.99999350309372" />
+		<Spinner fx:id="delay" editable="true" layoutX="304.0" layoutY="104.0" prefHeight="25.0" prefWidth="74.0">
+			<valueFactory>
+				<SpinnerValueFactory.DoubleSpinnerValueFactory amountToStepBy=".1" initialValue="0" max="1000" min="-1000" />
+			</valueFactory>
+		</Spinner>
+		<CheckListView fx:id="audiofiles" disable="true" layoutX="750.0" layoutY="63.0" onMouseClicked="#selectAudioFiles" prefHeight="675.0" prefWidth="225.0" />
+		<Text layoutX="811.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Audio Files" textAlignment="CENTER">
+			<font>
+				<Font name="System Bold" size="20.0" />
+			</font>
+		</Text>
+		<ListView fx:id="presets" layoutX="527.0" layoutY="65.0" prefHeight="200.0" prefWidth="200.0" />
+		<Text layoutX="593.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Presets" textAlignment="CENTER">
+			<font>
+				<Font name="System Bold" size="20.0" />
+			</font>
+		</Text>
+		<Button fx:id="addAudio" layoutX="780.0" layoutY="750.0" mnemonicParsing="false" onMouseClicked="#addAudioFile" text="Add" />
+		<Button fx:id="removeAudio" layoutX="887.0" layoutY="750.0" mnemonicParsing="false" text="Remove" />
+		<Button layoutX="504.0" layoutY="762.0" mnemonicParsing="false" text="Pause" />
+		<Button fx:id="Start" layoutX="455.0" layoutY="762.0" mnemonicParsing="false" onMouseClicked="#Start" text="Start" />
+		<Button layoutX="558.0" layoutY="762.0" mnemonicParsing="false" text="Stop" />
+		<Spinner fx:id="minRanDel" layoutX="304.0" layoutY="165.0" prefHeight="25.0" prefWidth="74.0">
+			<valueFactory>
+				<SpinnerValueFactory.DoubleSpinnerValueFactory amountToStepBy="1" initialValue="0" max="10000" min="-10000" />
+			</valueFactory>
+		</Spinner>
+		<Spinner fx:id="maxRanDel" layoutX="399.0" layoutY="165.0" prefHeight="25.0" prefWidth="74.0">
+			<valueFactory>
+				<SpinnerValueFactory.DoubleSpinnerValueFactory amountToStepBy="1" initialValue="0" max="10000" min="-10000" />
+			</valueFactory>
+		</Spinner>
+		<Text layoutX="383.0" layoutY="184.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-" wrappingWidth="14.798828125">
+			<font>
+				<Font name="System Bold" size="23.0" />
+			</font>
+		</Text>
+		<CheckBox fx:id="random" layoutX="304.0" layoutY="138.0" mnemonicParsing="false" onAction="#selectRepeat" text="Random Delay" />
+		<ListView fx:id="order" disable="true" layoutX="527.0" layoutY="330.0" prefHeight="408.0" prefWidth="200.0" />
+		<Text layoutX="552.0" layoutY="322.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Play Back Order" textAlignment="CENTER">
+			<font>
+				<Font name="System Bold" size="20.0" />
+			</font>
+		</Text>
+      <Button fx:id="orderUp" disable="true" layoutX="500.0" layoutY="330.0" mnemonicParsing="false" onAction="#orderUp" prefHeight="10.0" prefWidth="25.0" text="^">
          <font>
-            <Font name="System Bold" size="20.0" />
-         </font>
-      </Text>
-      <Button fx:id="addChannel" layoutX="47.0" layoutY="749.0" mnemonicParsing="false" onMouseClicked="#addChannel" text="Add" />
-      <Button fx:id="removeChannel" layoutX="154.0" layoutY="749.0" mnemonicParsing="false" text="Remove" />
-      <Slider layoutX="265.0" layoutY="63.0" majorTickUnit="10.0" orientation="VERTICAL" prefHeight="675.0" prefWidth="21.0" showTickLabels="true" showTickMarks="true" style="-fx-color: #4a9be8; -fx-control-inner-background: #9e9e9e;" value="100.0" />
-      <CheckBox fx:id="repeat" layoutX="304.0" layoutY="63.0" mnemonicParsing="false" onAction="#selectRepeat" text="Repeat" />
-      <Text layoutX="304.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Delay :" wrappingWidth="73.99999350309372" />
-      <Spinner fx:id="delay" editable="true" layoutX="304.0" layoutY="104.0" prefHeight="25.0" prefWidth="74.0">
-      <valueFactory>
-        <SpinnerValueFactory.DoubleSpinnerValueFactory amountToStepBy=".1" initialValue="0" max="1000" min="-1000" />
-      </valueFactory>
-      </Spinner>
-      <CheckListView fx:id="audiofiles" layoutX="750.0" layoutY="63.0" onMouseClicked="#selectAudioFiles" prefHeight="675.0" prefWidth="225.0" />
-      <Text layoutX="811.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Audio Files" textAlignment="CENTER">
-         <font>
-            <Font name="System Bold" size="20.0" />
-         </font>
-      </Text>
-      <ListView fx:id="presets" layoutX="527.0" layoutY="65.0" prefHeight="200.0" prefWidth="200.0" />
-      <Text layoutX="593.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Presets" textAlignment="CENTER">
-         <font>
-            <Font name="System Bold" size="20.0" />
-         </font>
-      </Text>
-      <Button fx:id="addAudio" layoutX="772.0" layoutY="749.0" mnemonicParsing="false" onMouseClicked="#addAudioFile" text="Add" />
-      <Button fx:id="removeAudio" layoutX="879.0" layoutY="749.0" mnemonicParsing="false" text="Remove" />
-      <Button layoutX="362.0" layoutY="287.0" mnemonicParsing="false" text="Pause" />
-      <Button fx:id="Start" layoutX="313.0" layoutY="287.0" mnemonicParsing="false" onMouseClicked="#Start" text="Start" />
-      <Button layoutX="416.0" layoutY="287.0" mnemonicParsing="false" text="Stop" />
-   </children>
+            <Font name="System Bold" size="12.0" />
+         </font></Button>
+      <Button fx:id="orderDown" disable="true" layoutX="500.0" layoutY="713.0" mnemonicParsing="false" onAction="#orderDown" prefWidth="25.0" text="v" />
+	</children>
 </AnchorPane>

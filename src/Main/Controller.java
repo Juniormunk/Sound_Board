@@ -2,6 +2,8 @@ package Main;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.controlsfx.control.CheckListView;
@@ -11,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
@@ -39,6 +42,30 @@ public class Controller
 	@SuppressWarnings("rawtypes")
 	@FXML
 	CheckListView audiofiles;
+
+	@FXML
+	Slider volume;
+
+	@SuppressWarnings("rawtypes")
+	@FXML
+	Spinner minRanDel;
+
+	@SuppressWarnings("rawtypes")
+	@FXML
+	Spinner maxRanDel;
+
+	@FXML
+	CheckBox random;
+
+	@SuppressWarnings("rawtypes")
+	@FXML
+	ListView order;
+
+	@FXML
+	Button orderUp;
+
+	@FXML
+	Button orderDown;
 
 	AudioChannel selectedChannel;
 
@@ -87,30 +114,6 @@ public class Controller
 	@FXML
 	void selectChannel(MouseEvent event)
 	{
-		if (channels.getSelectionModel().getSelectedItem() != null)
-		{
-			lastSelectedChannel = selectedChannel;
-			selectedChannel = (AudioChannel) channels.getSelectionModel().getSelectedItem();
-
-			if (lastSelectedChannel != selectedChannel)
-			{
-				selectedChannel.ingnoreChange = true;
-				audiofiles.getItems().clear();
-				audiofiles.getCheckModel().clearChecks();
-				audiofiles.getItems().addAll(Main.availableFiles);
-				audiofiles.getCheckModel().clearChecks();
-
-				for (AudioFile file : selectedChannel.getAudioFiles())
-				{
-					audiofiles.getCheckModel().check(file.index);
-				}
-
-				repeat.setSelected(selectedChannel.isRepeat());
-
-				selectedChannel.ingnoreChange = false;
-			}
-
-		}
 
 	}
 
@@ -148,9 +151,57 @@ public class Controller
 	}
 
 	@FXML
+	void orderDown(ActionEvent event)
+	{
+		move(selectedChannel.getAudioFiles(), (AudioFile) order.getSelectionModel().getSelectedItem(), 1);
+	}
+
+	@FXML
+	void orderUp(ActionEvent event)
+	{
+		move(selectedChannel.getAudioFiles(), (AudioFile) order.getSelectionModel().getSelectedItem(), -1);
+	}
+
+	void move(ArrayList<AudioFile> list, AudioFile toMove, int indexdist)
+	{
+		int index = list.indexOf(toMove);
+		list.remove(index);
+		int indexToMove;
+		if (index + indexdist < 0)
+			indexToMove = list.size();
+		else if (index + indexdist > list.size())
+			indexToMove = 0;
+		else
+			indexToMove = index + indexdist;
+
+		list.add(indexToMove, toMove);
+		if (Main.controller.lastSelectedChannel != Main.controller.selectedChannel)
+		{
+			Main.controller.selectedChannel.ingnoreChange = true;
+			Main.controller.selectedChannel.setAudioFiles(list);
+			Main.controller.audiofiles.getItems().clear();
+			Main.controller.audiofiles.getCheckModel().clearChecks();
+			Main.controller.audiofiles.getItems().addAll(Main.availableFiles);
+			Main.controller.audiofiles.getCheckModel().clearChecks();
+
+			for (AudioFile file : Main.controller.selectedChannel.getAudioFiles())
+			{
+				Main.controller.audiofiles.getCheckModel().check(file.index);
+			}
+
+			Main.controller.repeat.setSelected(Main.controller.selectedChannel.isRepeat());
+
+			Main.controller.order.getItems().setAll(Main.controller.selectedChannel.getAudioFiles());
+
+			Main.controller.selectedChannel.ingnoreChange = false;
+		}
+
+	}
+
+	@FXML
 	void selectRepeat(ActionEvent event)
 	{
-		if(selectedChannel != null)
+		if (selectedChannel != null)
 		{
 			selectedChannel.setRepeat(repeat.isSelected());
 		}
