@@ -1,0 +1,5 @@
+.root { -fx-focus-color: lightgray; }
+.root { -fx-faint-focus-color: transparent; }
+.list-cell:filled:selected:focused, .list-cell:filled:selected {
+    -fx-background-color:  #f49542;
+}

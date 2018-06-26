@@ -132,7 +132,6 @@ public class Controller
 
 	public void selectAudioFiles(MouseEvent event)
 	{
-
 	}
 
 	@SuppressWarnings("unchecked")
@@ -179,6 +178,9 @@ public class Controller
 		{
 			Main.controller.selectedChannel.ingnoreChange = true;
 			Main.controller.selectedChannel.setAudioFiles(list);
+			
+			AudioFile selectedFile = (AudioFile) Main.controller.audiofiles.getSelectionModel().getSelectedItem();
+			
 			Main.controller.audiofiles.getItems().clear();
 			Main.controller.audiofiles.getCheckModel().clearChecks();
 			Main.controller.audiofiles.getItems().addAll(Main.availableFiles);
@@ -193,8 +195,14 @@ public class Controller
 
 			Main.controller.order.getItems().setAll(Main.controller.selectedChannel.getAudioFiles());
 
+			
+			Main.controller.order.getSelectionModel().select(indexToMove);
+			
+			Main.controller.audiofiles.getSelectionModel().select(selectedFile);
+
 			Main.controller.selectedChannel.ingnoreChange = false;
 		}
+		
 
 	}
 

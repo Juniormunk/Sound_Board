@@ -7,6 +7,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -35,11 +36,16 @@ public class Main extends Application
 	{
 		FXMLLoader loader1 = new FXMLLoader(getClass().getResource("Test.fxml"));
 		Scene primary = new Scene(loader1.load());
+		primary.getStylesheets().add("Test.css");
 		// Controller controller = loader1.getController();
 		defaultStage.setScene(primary);
 		defaultStage.show();
 		defaultStage.setResizable(false);
 		Controller controller = loader1.getController();
+		
+		
+		
+		
 
 		Main.controller = controller;
 
@@ -134,11 +140,11 @@ public class Main extends Application
 			@Override
 			public void changed(ObservableValue<? extends AudioFile> observable, AudioFile oldValue, AudioFile newValue)
 			{
-				if(newValue != null)
+				if (newValue != null)
 				{
 					Main.controller.orderUp.setDisable(false);
 					Main.controller.orderDown.setDisable(false);
-					
+
 				}
 				else
 				{
