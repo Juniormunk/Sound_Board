@@ -42,10 +42,6 @@ public class Main extends Application
 		defaultStage.show();
 		defaultStage.setResizable(false);
 		Controller controller = loader1.getController();
-		
-		
-		
-		
 
 		Main.controller = controller;
 
@@ -63,6 +59,8 @@ public class Main extends Application
 
 					output = Main.controller.selectedChannel.getAudioFiles();
 
+
+
 					for (AudioFile file : list)
 					{
 						if (!output.contains(file))
@@ -70,6 +68,14 @@ public class Main extends Application
 							output.add(file);
 						}
 					}
+//					
+//					for (AudioFile file : output)
+//					{
+//						if (!list.contains(file))
+//						{
+//							output.remove(file);
+//						}
+//					}
 
 					Main.controller.selectedChannel.setAudioFiles(output);
 
