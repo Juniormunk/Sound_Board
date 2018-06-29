@@ -81,7 +81,7 @@ public class Main extends Application
 					// }
 					// }
 
-					for (int i = 0; i <= output.size()-1; i++)
+					for (int i = 0; i <= output.size() - 1; i++)
 					{
 						if (!list.contains(output.get(i)))
 						{
@@ -121,6 +121,11 @@ public class Main extends Application
 				{
 					Main.controller.audiofiles.setDisable(true);
 					Main.controller.order.setDisable(true);
+					Main.controller.clearOrder();
+					Main.controller.deselectAudioFiles();
+					
+					
+					
 				}
 				if (Main.controller.channels.getSelectionModel().getSelectedItem() != null)
 				{

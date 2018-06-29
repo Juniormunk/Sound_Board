@@ -128,13 +128,6 @@ public class Controller
 	}
 
 	@SuppressWarnings("unchecked")
-	@FXML
-	void selectChannel(MouseEvent event)
-	{
-
-	}
-
-	@SuppressWarnings("unchecked")
 	void refreshAudioChennels()
 	{
 		channels.getItems().clear();
@@ -145,11 +138,19 @@ public class Controller
 	void addChannel(MouseEvent event)
 	{
 		Main.newAudio.show();
+		
+	}
+	@FXML
+	void removeChannel(MouseEvent event)
+	{
+		if(selectedChannel!=null)
+		{
+			Main.audioChannels.remove(selectedChannel);
+			Main.controller.refreshAudioChennels();
+			
+		}
 	}
 
-	public void selectAudioFiles(MouseEvent event)
-	{
-	}
 
 	@SuppressWarnings("unchecked")
 	public void deselectAudioFiles()
@@ -172,6 +173,9 @@ public class Controller
 		move(selectedChannel.getAudioFiles(), (AudioFile) order.getSelectionModel().getSelectedItem(), 1);
 	}
 
+
+	
+	
 	@FXML
 	void orderUp(ActionEvent event)
 	{
@@ -229,11 +233,15 @@ public class Controller
 			selectedChannel.setRepeat(repeat.isSelected());
 		}
 	}
-
-	@FXML
-	void toggleButtons(MouseEvent event)
+	
+	void clearOrder()
 	{
-
+		order.getItems().clear();
+	}
+	
+	void audioFilesDeselect()
+	{
+		audiofiles.getCheckModel().clearChecks();
 	}
 
 }
