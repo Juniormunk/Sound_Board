@@ -3,3 +3,9 @@
 .list-cell:filled:selected:focused, .list-cell:filled:selected {
     -fx-background-color:  #f49542;
 }
+.titled-pane > *.content {
+    -fx-border-color: transparent;
+}
+.accordion > *.content {
+	-fx-box-border: transparent;
+}

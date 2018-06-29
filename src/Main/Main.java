@@ -6,10 +6,14 @@ import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
+import javafx.event.EventType;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.control.TitledPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 
 public class Main extends Application
 {
@@ -18,6 +22,8 @@ public class Main extends Application
 	public static ArrayList<AudioFile> availableFiles = new ArrayList<AudioFile>();
 	public static ArrayList<AudioChannel> audioChannels = new ArrayList<AudioChannel>();
 	public static Controller controller;
+
+	public static ArrayList<AudioButton> audioButtons = new ArrayList<AudioButton>();
 
 	private String test1 = "C:/Users/Cameron/Documents/air.mp3";
 	private String test2 = "C:/Users/Cameron/Documents/crik.mp3";
@@ -59,8 +65,6 @@ public class Main extends Application
 
 					output = Main.controller.selectedChannel.getAudioFiles();
 
-
-
 					for (AudioFile file : list)
 					{
 						if (!output.contains(file))
@@ -68,14 +72,22 @@ public class Main extends Application
 							output.add(file);
 						}
 					}
-//					
-//					for (AudioFile file : output)
-//					{
-//						if (!list.contains(file))
-//						{
-//							output.remove(file);
-//						}
-//					}
+					//
+					// for (AudioFile file : output)
+					// {
+					// if (!list.contains(file))
+					// {
+					// output.remove(file);
+					// }
+					// }
+
+					for (int i = 0; i <= output.size()-1; i++)
+					{
+						if (!list.contains(output.get(i)))
+						{
+							output.remove(output.get(i));
+						}
+					}
 
 					Main.controller.selectedChannel.setAudioFiles(output);
 
@@ -159,6 +171,42 @@ public class Main extends Application
 				}
 			}
 		});
+
+		Main.controller.accordion.expandedPaneProperty().addListener((ObservableValue<? extends TitledPane> observable, TitledPane oldPane, TitledPane newPane) ->
+		{
+
+			if (oldPane != null && oldPane == Main.controller.audioPane)
+			{
+				Main.controller.buttonPane.setExpanded(true);
+			}
+			if (oldPane != null && oldPane == Main.controller.buttonPane)
+			{
+				Main.controller.audioPane.setExpanded(true);
+			}
+		});
+
+		for (int i = 0; i <= 11; i++)
+		{
+			audioButtons.add(new AudioButton());
+		}
+
+		Main.controller.grid.setAlignment(Pos.CENTER);
+
+		Main.controller.grid.add(audioButtons.get(0), 0, 0);
+		Main.controller.grid.add(audioButtons.get(1), 1, 0);
+		Main.controller.grid.add(audioButtons.get(2), 2, 0);
+
+		Main.controller.grid.add(audioButtons.get(3), 0, 1);
+		Main.controller.grid.add(audioButtons.get(4), 1, 1);
+		Main.controller.grid.add(audioButtons.get(5), 2, 1);
+
+		Main.controller.grid.add(audioButtons.get(6), 0, 2);
+		Main.controller.grid.add(audioButtons.get(7), 1, 2);
+		Main.controller.grid.add(audioButtons.get(8), 2, 2);
+
+		Main.controller.grid.add(audioButtons.get(9), 0, 3);
+		Main.controller.grid.add(audioButtons.get(10), 1, 3);
+		Main.controller.grid.add(audioButtons.get(11), 2, 3);
 
 		stage = defaultStage;
 

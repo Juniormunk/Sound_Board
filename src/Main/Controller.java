@@ -10,12 +10,15 @@ import org.controlsfx.control.CheckListView;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Accordion;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
@@ -70,6 +73,20 @@ public class Controller
 	AudioChannel selectedChannel;
 
 	AudioChannel lastSelectedChannel;
+	
+    @FXML
+    GridPane grid;
+
+	@FXML
+	TitledPane audioPane;
+
+	@FXML
+	TitledPane buttonPane;
+
+	boolean isopen = false;
+
+	@FXML
+	Accordion accordion;
 
 	ArrayList<AudioFile> list = new ArrayList<AudioFile>();
 
@@ -95,12 +112,12 @@ public class Controller
 
 				}
 			}
+			
 			int i = 0;
 			for (AudioFile file : Main.availableFiles)
 			{
 				file.index = i;
 				i++;
-				// We need not to use this....
 			}
 
 			audiofiles.getItems().clear();
@@ -178,9 +195,9 @@ public class Controller
 		{
 			Main.controller.selectedChannel.ingnoreChange = true;
 			Main.controller.selectedChannel.setAudioFiles(list);
-			
+
 			AudioFile selectedFile = (AudioFile) Main.controller.audiofiles.getSelectionModel().getSelectedItem();
-			
+
 			Main.controller.audiofiles.getItems().clear();
 			Main.controller.audiofiles.getCheckModel().clearChecks();
 			Main.controller.audiofiles.getItems().addAll(Main.availableFiles);
@@ -195,14 +212,12 @@ public class Controller
 
 			Main.controller.order.getItems().setAll(Main.controller.selectedChannel.getAudioFiles());
 
-			
 			Main.controller.order.getSelectionModel().select(indexToMove);
-			
+
 			Main.controller.audiofiles.getSelectionModel().select(selectedFile);
 
 			Main.controller.selectedChannel.ingnoreChange = false;
 		}
-		
 
 	}
 
@@ -214,4 +229,11 @@ public class Controller
 			selectedChannel.setRepeat(repeat.isSelected());
 		}
 	}
+
+	@FXML
+	void toggleButtons(MouseEvent event)
+	{
+
+	}
+
 }
