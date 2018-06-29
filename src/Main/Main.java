@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TitledPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -19,17 +20,10 @@ public class Main extends Application
 {
 	public static Stage stage;
 	public static Stage newAudio;
-	public static ArrayList<AudioFile> availableFiles = new ArrayList<AudioFile>();
 	public static ArrayList<AudioChannel> audioChannels = new ArrayList<AudioChannel>();
 	public static Controller controller;
 
-	public static ArrayList<AudioButton> audioButtons = new ArrayList<AudioButton>();
-
-	private String test1 = "C:/Users/Cameron/Documents/air.mp3";
-	private String test2 = "C:/Users/Cameron/Documents/crik.mp3";
-
-	// private String test1 = "C:/Users/camco/Documents/air.mp3";
-	// private String test2 = "C:/Users/camco/Documents/crik.mp3";
+	public static ArrayList<Pane> audioButtons = new ArrayList<Pane>();
 
 	public static void main(String[] args)
 	{
@@ -72,14 +66,6 @@ public class Main extends Application
 							output.add(file);
 						}
 					}
-					//
-					// for (AudioFile file : output)
-					// {
-					// if (!list.contains(file))
-					// {
-					// output.remove(file);
-					// }
-					// }
 
 					for (int i = 0; i <= output.size() - 1; i++)
 					{
@@ -121,16 +107,18 @@ public class Main extends Application
 				{
 					Main.controller.audiofiles.setDisable(true);
 					Main.controller.order.setDisable(true);
+					Main.controller.addAudio.setDisable(true);
+					Main.controller.removeAudio.setDisable(true);
 					Main.controller.clearOrder();
-					Main.controller.deselectAudioFiles();
-					
-					
-					
+					// Main.controller.audiofiles.getItems().clear();
+
 				}
 				if (Main.controller.channels.getSelectionModel().getSelectedItem() != null)
 				{
 					Main.controller.audiofiles.setDisable(false);
 					Main.controller.order.setDisable(false);
+					Main.controller.addAudio.setDisable(false);
+					Main.controller.removeAudio.setDisable(false);
 					Main.controller.lastSelectedChannel = Main.controller.selectedChannel;
 					Main.controller.selectedChannel = (AudioChannel) Main.controller.channels.getSelectionModel().getSelectedItem();
 
@@ -139,7 +127,7 @@ public class Main extends Application
 						Main.controller.selectedChannel.ingnoreChange = true;
 						Main.controller.audiofiles.getItems().clear();
 						Main.controller.audiofiles.getCheckModel().clearChecks();
-						Main.controller.audiofiles.getItems().addAll(Main.availableFiles);
+						Main.controller.audiofiles.getItems().addAll(Main.controller.selectedChannel.availableFiles);
 						Main.controller.audiofiles.getCheckModel().clearChecks();
 
 						for (AudioFile file : Main.controller.selectedChannel.getAudioFiles())
@@ -149,7 +137,7 @@ public class Main extends Application
 
 						Main.controller.repeat.setSelected(Main.controller.selectedChannel.isRepeat());
 
-						Main.controller.order.getItems().setAll(Main.controller.selectedChannel.getAudioFiles());
+						Main.controller.refreshOrder();
 
 						Main.controller.selectedChannel.ingnoreChange = false;
 					}
@@ -192,7 +180,7 @@ public class Main extends Application
 
 		for (int i = 0; i <= 11; i++)
 		{
-			audioButtons.add(new AudioButton());
+			audioButtons.add(new Pane(new AudioButton(), new Slider()));
 		}
 
 		Main.controller.grid.setAlignment(Pos.CENTER);
@@ -219,38 +207,12 @@ public class Main extends Application
 
 		FXMLLoader loader2 = new FXMLLoader(getClass().getResource("newAudio.fxml"));
 		Scene primary2 = new Scene(loader2.load());
-		// Controller controller = loader1.getController();
+
 		newAudio.setScene(primary2);
 		newAudio.setResizable(false);
 		@SuppressWarnings("unused")
 		NewAudioController controller2 = loader2.getController();
 
-		// ArrayList<File> files = new ArrayList<File>();
-		//
-		// files.add(new File(test1));
-		// files.add(new File(test2));
-		//
-		// AudioChannel channel = new AudioChannel("Test");
-		//
-		//
-		// channel.setAudioFiles(files);
-		//
-		// channel.playSound();
-		//
-		// ArrayList<File> files2 = new ArrayList<File>();
-		//
-		// files2.add(new File(test2));
-		// files2.add(new File(test1));
-		//
-		// AudioChannel channel2 = new AudioChannel("Test1");
-		//
-		//
-		// channel2.setAudioFiles(files2);
-		//
-		// channel2.playSound();
-
-		// controller.channels.getItems().addAll("Okay?", "hey");
-		// controller.audiofiles.getItems().addAll("test","Test1");
 	}
 
 }

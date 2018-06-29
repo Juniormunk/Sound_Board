@@ -26,6 +26,9 @@ public class AudioButton extends ToggleButton
 
 	AudioFile file;
 	boolean isPlaying;
+	double volume = 100;
+
+	AudioButton thisbutton = this;
 
 	public AudioButton()
 	{
@@ -37,6 +40,8 @@ public class AudioButton extends ToggleButton
 		context.getItems().addAll(linkAudio, rename);
 		this.setContextMenu(context);
 	}
+
+	// TODO: ADD END FEATURE
 
 	public void LinkAudio(ActionEvent event)
 	{
@@ -95,16 +100,30 @@ public class AudioButton extends ToggleButton
 			{
 				buttonPlayer.stop();
 			}
-			for (AudioButton audio : Main.audioButtons)
+			for (Pane audio : Main.audioButtons)
 			{
-				if (this != audio)
+				if (this != audio.button)
 				{
-					audio.deselect();
+					audio.button.deselect();
 
 				}
 			}
 			sound = new Media(file.getPath().toString().replace('\\', '/'));
 			buttonPlayer = new MediaPlayer(sound);
+			buttonPlayer.setOnEndOfMedia(new Runnable()
+			{
+
+				@Override
+				public void run()
+				{
+					thisbutton.setSelected(false);
+					buttonPlayer.stop();
+					isPlaying = false;
+				}
+
+			});
+			buttonPlayer.setVolume(volume);
+
 			buttonPlayer.play();
 			this.setSelected(true);
 			isPlaying = true;
@@ -120,6 +139,16 @@ public class AudioButton extends ToggleButton
 			isPlaying = false;
 			this.setSelected(false);
 		}
-
 	}
+
+	void setVolume(double volume)
+	{
+		if (buttonPlayer != null)
+		{
+			buttonPlayer.setVolume(volume);
+		}
+
+		this.volume = volume;
+	}
+
 }

@@ -36,6 +36,12 @@ public class Controller
 	Button removeChannel;
 
 	@FXML
+	Button addAudio;
+
+	@FXML
+	Button removeAudio;
+
+	@FXML
 	CheckBox repeat;
 
 	@SuppressWarnings("rawtypes")
@@ -73,9 +79,9 @@ public class Controller
 	AudioChannel selectedChannel;
 
 	AudioChannel lastSelectedChannel;
-	
-    @FXML
-    GridPane grid;
+
+	@FXML
+	GridPane grid;
 
 	@FXML
 	TitledPane audioPane;
@@ -94,37 +100,84 @@ public class Controller
 	@FXML
 	void addAudioFile(MouseEvent event)
 	{
-
-		FileChooser fileChooser = new FileChooser();
-
-		fileChooser.setTitle("Open Resource File");
-
-		ExtensionFilter filter = new FileChooser.ExtensionFilter("Audio Files", "*.wav", "*.mp3", "*.aac");
-		fileChooser.getExtensionFilters().add(filter);
-		List<File> files = fileChooser.showOpenMultipleDialog(Main.stage);
-		if (files != null)
+		if (selectedChannel != null)
 		{
-			for (File file : files)
+			FileChooser fileChooser = new FileChooser();
+
+			fileChooser.setTitle("Open Resource File");
+
+			ExtensionFilter filter = new FileChooser.ExtensionFilter("Audio Files", "*.wav", "*.mp3", "*.aac");
+			fileChooser.getExtensionFilters().add(filter);
+			List<File> files = fileChooser.showOpenMultipleDialog(Main.stage);
+			if (files != null)
 			{
-				if (!Main.availableFiles.contains(new AudioFile(file)))
+				for (File file : files)
 				{
-					Main.availableFiles.add(new AudioFile(file));
+					if (!selectedChannel.availableFiles.contains(new AudioFile(file)))
+					{
+						selectedChannel.availableFiles.add(new AudioFile(file));
 
+					}
 				}
-			}
-			
-			int i = 0;
-			for (AudioFile file : Main.availableFiles)
-			{
-				file.index = i;
-				i++;
-			}
 
-			audiofiles.getItems().clear();
-			audiofiles.getItems().addAll(Main.availableFiles);
+				int i = 0;
+				for (AudioFile file : selectedChannel.availableFiles)
+				{
+					if (file != null)
+					{
+						file.index = i;
+						i++;
+					}
+				}
+
+				audiofiles.getItems().clear();
+				audiofiles.getItems().addAll(selectedChannel.availableFiles);
+				if (Main.controller.selectedChannel != null)
+				{
+					for (AudioFile file : Main.controller.selectedChannel.getAudioFiles())
+					{
+						Main.controller.audiofiles.getCheckModel().check(file.index);
+					}
+				}
+
+			}
 		}
 		// AudioChannel channel = new AudioChannel("Test");
 		// channel.playSound();
+	}
+
+	@SuppressWarnings("unchecked")
+	@FXML
+	void removeAudioFile(MouseEvent event)
+	{
+		if (audiofiles.getSelectionModel().getSelectedItem() != null && selectedChannel != null)
+		{
+			selectedChannel.ingnoreChange = true;
+			audiofiles.getCheckModel().clearCheck(audiofiles.getSelectionModel().getSelectedItem());
+			selectedChannel.availableFiles.remove(audiofiles.getSelectionModel().getSelectedItem());
+			selectedChannel.getAudioFiles().remove(audiofiles.getSelectionModel().getSelectedItem());
+			order.getItems().remove(audiofiles.getSelectionModel().getSelectedItem());
+
+			audiofiles.getItems().remove(audiofiles.getSelectionModel().getSelectedItem());
+			int i = 0;
+			for (AudioFile file : selectedChannel.availableFiles)
+			{
+				if (file != null)
+				{
+					file.index = i;
+					i++;
+				}
+			}
+			for (AudioFile file : Main.controller.selectedChannel.getAudioFiles())
+			{
+				if (file != null)
+				{
+					Main.controller.audiofiles.getCheckModel().check(file.index);
+				}
+			}
+			selectedChannel.ingnoreChange = false;
+
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -134,28 +187,36 @@ public class Controller
 		channels.getItems().addAll(Main.audioChannels);
 	}
 
+	@SuppressWarnings("unchecked")
+	void refreshAudioFiles()
+	{
+		audiofiles.getItems().clear();
+		audiofiles.getItems().addAll(selectedChannel.availableFiles);
+		for (AudioFile file : Main.controller.selectedChannel.getAudioFiles())
+		{
+			Main.controller.audiofiles.getCheckModel().check(file.index);
+		}
+	}
+
 	@FXML
 	void addChannel(MouseEvent event)
 	{
 		Main.newAudio.show();
-		
+
 	}
+
 	@FXML
 	void removeChannel(MouseEvent event)
 	{
-		if(selectedChannel!=null)
+		if (selectedChannel != null)
 		{
 			Main.audioChannels.remove(selectedChannel);
-			Main.controller.refreshAudioChennels();
+			refreshAudioChennels();
 			
+			
+			
+
 		}
-	}
-
-
-	@SuppressWarnings("unchecked")
-	public void deselectAudioFiles()
-	{
-		audiofiles.getItems().clear();
 	}
 
 	@FXML
@@ -173,15 +234,13 @@ public class Controller
 		move(selectedChannel.getAudioFiles(), (AudioFile) order.getSelectionModel().getSelectedItem(), 1);
 	}
 
-
-	
-	
 	@FXML
 	void orderUp(ActionEvent event)
 	{
 		move(selectedChannel.getAudioFiles(), (AudioFile) order.getSelectionModel().getSelectedItem(), -1);
 	}
 
+	@SuppressWarnings("unchecked")
 	void move(ArrayList<AudioFile> list, AudioFile toMove, int indexdist)
 	{
 		int index = list.indexOf(toMove);
@@ -204,7 +263,7 @@ public class Controller
 
 			Main.controller.audiofiles.getItems().clear();
 			Main.controller.audiofiles.getCheckModel().clearChecks();
-			Main.controller.audiofiles.getItems().addAll(Main.availableFiles);
+			Main.controller.audiofiles.getItems().addAll(selectedChannel.availableFiles);
 			Main.controller.audiofiles.getCheckModel().clearChecks();
 
 			for (AudioFile file : Main.controller.selectedChannel.getAudioFiles())
@@ -233,12 +292,20 @@ public class Controller
 			selectedChannel.setRepeat(repeat.isSelected());
 		}
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	void refreshOrder()
+	{
+		clearOrder();
+		order.getItems().setAll(selectedChannel.getAudioFiles());
+
+	}
+
 	void clearOrder()
 	{
 		order.getItems().clear();
 	}
-	
+
 	void audioFilesDeselect()
 	{
 		audiofiles.getCheckModel().clearChecks();

@@ -9,3 +9,8 @@
 .accordion > *.content {
 	-fx-box-border: transparent;
 }
+.slider
+{
+	-fx-color:  #4a9be8;
+	-fx-control-inner-background:  #9e9e9e
+}

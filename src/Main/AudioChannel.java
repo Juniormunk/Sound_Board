@@ -17,6 +17,7 @@ public class AudioChannel
 	private double volume;
 	private double delay;
 	private ArrayList<AudioFile> audioFiles = new ArrayList<AudioFile>();
+	public ArrayList<AudioFile> availableFiles = new ArrayList<AudioFile>();
 	private MediaView media;
 	ArrayList<MediaPlayer> players;
 	boolean ingnoreChange;

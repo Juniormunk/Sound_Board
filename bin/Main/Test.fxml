@@ -11,6 +11,7 @@
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.SpinnerValueFactory.DoubleSpinnerValueFactory?>
 <?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.input.KeyCodeCombination?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -27,7 +28,20 @@
 			<menus>
 				<Menu mnemonicParsing="false" text="File">
 					<items>
-						<MenuItem mnemonicParsing="false" text="Close" />
+                  <MenuItem mnemonicParsing="false" text="Save">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+                  <MenuItem mnemonicParsing="false" text="Save As">
+                     <accelerator>
+                        <KeyCodeCombination alt="UP" code="S" control="DOWN" meta="UP" shift="DOWN" shortcut="UP" />
+                     </accelerator>
+                  </MenuItem>
+						<MenuItem mnemonicParsing="false" text="Close">
+                     <accelerator>
+                        <KeyCodeCombination alt="DOWN" code="F4" control="UP" meta="UP" shift="UP" shortcut="UP" />
+                     </accelerator></MenuItem>
 					</items>
 				</Menu>
 				<Menu mnemonicParsing="false" text="Edit">
@@ -88,14 +102,8 @@
                   				<Font name="System Bold" size="20.0" />
                   			</font>
                   		</Text>
-                  		<ListView fx:id="presets" layoutX="42.0" layoutY="34.0" prefHeight="200.0" prefWidth="200.0" style="-fx-selection-bar: #f49542;" />
-                  		<Text layoutX="108.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Presets" textAlignment="CENTER">
-                  			<font>
-                  				<Font name="System Bold" size="20.0" />
-                  			</font>
-                  		</Text>
-                  		<Button fx:id="addAudio" layoutX="295.0" layoutY="719.0" mnemonicParsing="false" onMouseClicked="#addAudioFile" style="-fx-background-radius: 0;" text="Add" />
-                  		<Button fx:id="removeAudio" layoutX="402.0" layoutY="719.0" mnemonicParsing="false" style="-fx-background-radius: 0;" text="Remove" />
+                  		<Button fx:id="addAudio" disable="true" layoutX="295.0" layoutY="719.0" mnemonicParsing="false" onMouseClicked="#addAudioFile" style="-fx-background-radius: 0;" text="Add" />
+                  		<Button fx:id="removeAudio" disable="true" layoutX="402.0" layoutY="719.0" mnemonicParsing="false" onMouseClicked="#removeAudioFile" style="-fx-background-radius: 0;" text="Remove" />
                   		<ListView fx:id="order" disable="true" layoutX="42.0" layoutY="299.0" prefHeight="408.0" prefWidth="200.0" style="-fx-selection-bar: #f49542;" />
                   		<Text layoutX="67.0" layoutY="291.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Play Back Order" textAlignment="CENTER">
                   			<font>
