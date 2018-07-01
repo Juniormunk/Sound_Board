@@ -18,9 +18,10 @@ public class AudioChannel
 	private double delay;
 	private ArrayList<AudioFile> audioFiles = new ArrayList<AudioFile>();
 	public ArrayList<AudioFile> availableFiles = new ArrayList<AudioFile>();
-	private MediaView media;
+	public MediaView media;
 	ArrayList<MediaPlayer> players;
 	boolean ingnoreChange;
+	boolean isPaused;
 
 	public AudioChannel(String name)
 	{

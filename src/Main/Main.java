@@ -6,20 +6,17 @@ import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
-import javafx.event.EventType;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TitledPane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
+
 
 public class Main extends Application
 {
 	public static Stage stage;
-	public static Stage newAudio;
 	public static ArrayList<AudioChannel> audioChannels = new ArrayList<AudioChannel>();
 	public static Controller controller;
 
@@ -202,16 +199,6 @@ public class Main extends Application
 		Main.controller.grid.add(audioButtons.get(11), 2, 3);
 
 		stage = defaultStage;
-
-		newAudio = new Stage();
-
-		FXMLLoader loader2 = new FXMLLoader(getClass().getResource("newAudio.fxml"));
-		Scene primary2 = new Scene(loader2.load());
-
-		newAudio.setScene(primary2);
-		newAudio.setResizable(false);
-		@SuppressWarnings("unused")
-		NewAudioController controller2 = loader2.getController();
 
 	}
 

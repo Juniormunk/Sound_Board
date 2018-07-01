@@ -5,17 +5,22 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.controlsfx.control.CheckListView;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Accordion;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -201,7 +206,19 @@ public class Controller
 	@FXML
 	void addChannel(MouseEvent event)
 	{
-		Main.newAudio.show();
+		TextInputDialog dialog = new TextInputDialog("");
+		dialog.setTitle("Name Dialog");
+		dialog.setHeaderText("Name");
+		dialog.setContentText("Please enter a name for this channel:");
+
+		// Traditional way to get the response value.
+		Optional<String> result = dialog.showAndWait();
+
+		result.ifPresent(name ->
+		{
+			Main.audioChannels.add(new AudioChannel(name));
+			Main.controller.refreshAudioChennels();
+		});
 
 	}
 
@@ -212,9 +229,6 @@ public class Controller
 		{
 			Main.audioChannels.remove(selectedChannel);
 			refreshAudioChennels();
-			
-			
-			
 
 		}
 	}
@@ -224,7 +238,36 @@ public class Controller
 	{
 		if (selectedChannel != null)
 		{
-			selectedChannel.playSound();
+			if (selectedChannel.isPaused)
+			{
+				selectedChannel.media.getMediaPlayer().play();
+				selectedChannel.isPaused=false;
+			}
+			else
+			{
+				selectedChannel.playSound();
+
+			}
+
+		}
+	}
+
+	@FXML
+	void pause(MouseEvent event)
+	{
+		if (selectedChannel != null)
+		{
+			selectedChannel.media.getMediaPlayer().pause();
+			selectedChannel.isPaused=true;
+		}
+	}
+
+	@FXML
+	void stop(MouseEvent event)
+	{
+		if (selectedChannel != null)
+		{
+			selectedChannel.media.getMediaPlayer().stop();
 		}
 	}
 
@@ -309,6 +352,41 @@ public class Controller
 	void audioFilesDeselect()
 	{
 		audiofiles.getCheckModel().clearChecks();
+	}
+
+	@FXML
+	void save(ActionEvent event)
+	{
+
+	}
+
+	@FXML
+	void saveAs(ActionEvent event)
+	{
+
+	}
+
+	@FXML
+	void close(ActionEvent event)
+	{
+		Platform.exit();
+	}
+
+	@FXML
+	void openSave(ActionEvent event)
+	{
+
+	}
+
+	@FXML
+	void showAbout(ActionEvent event)
+	{
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("About");
+		alert.setHeaderText(null);
+		alert.setContentText("Created By: Cameron Coesens\nVersion: 1.0");
+
+		alert.showAndWait();
 	}
 
 }
