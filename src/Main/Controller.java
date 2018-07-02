@@ -1,9 +1,8 @@
 package Main;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -241,7 +240,7 @@ public class Controller
 			if (selectedChannel.isPaused)
 			{
 				selectedChannel.media.getMediaPlayer().play();
-				selectedChannel.isPaused=false;
+				selectedChannel.isPaused = false;
 			}
 			else
 			{
@@ -258,7 +257,7 @@ public class Controller
 		if (selectedChannel != null)
 		{
 			selectedChannel.media.getMediaPlayer().pause();
-			selectedChannel.isPaused=true;
+			selectedChannel.isPaused = true;
 		}
 	}
 
@@ -349,6 +348,11 @@ public class Controller
 		order.getItems().clear();
 	}
 
+	void refreshButtons()
+	{
+
+	}
+
 	void audioFilesDeselect()
 	{
 		audiofiles.getCheckModel().clearChecks();
@@ -357,13 +361,33 @@ public class Controller
 	@FXML
 	void save(ActionEvent event)
 	{
-
+		System.out.println("SAVE");
 	}
 
 	@FXML
 	void saveAs(ActionEvent event)
 	{
+		FileChooser fileChooser = new FileChooser();
 
+		fileChooser.setTitle("Open Resource File");
+
+		ExtensionFilter filter = new FileChooser.ExtensionFilter("Properties File", "*.properties");
+		fileChooser.getExtensionFilters().add(filter);
+		File file = fileChooser.showOpenDialog(Main.stage);
+		if (file != null)
+		{
+			try
+			{
+				ConfigHandler handle = new ConfigHandler(file, true);
+
+				handle.save();
+
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@FXML
@@ -375,7 +399,26 @@ public class Controller
 	@FXML
 	void openSave(ActionEvent event)
 	{
+		FileChooser fileChooser = new FileChooser();
 
+		fileChooser.setTitle("Open Resource File");
+
+		ExtensionFilter filter = new FileChooser.ExtensionFilter("Properties File", "*.properties");
+		fileChooser.getExtensionFilters().add(filter);
+		File file = fileChooser.showOpenDialog(Main.stage);
+		if (file != null)
+		{
+			try
+			{
+				ConfigHandler handle = new ConfigHandler(file, false);
+				handle.load();
+
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@FXML

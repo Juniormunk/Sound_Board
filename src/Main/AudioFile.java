@@ -32,35 +32,19 @@ public class AudioFile extends File
 
 	public AudioFile(String data, String nothing)
 	{
-		super(Arrays.asList(data.substring(6, data.length() - 1).split("\\|\\|")).get(0).split("=")[1]);
 
-		data = data.substring(6, data.length() - 1);
+		super(Arrays.asList(data.substring(11, data.length() - 1).split("\\|\\|")).get(0).split("-")[1]);
+		
+		data = data.substring(11, data.length() - 1);
 		ArrayList<String> arr = new ArrayList<String>();
 		arr.addAll(Arrays.asList(data.split("\\|\\|")));
-
-		selected = getBool(arr.get(1).split("=")[1]);
-		index = Integer.parseInt(arr.get(2).split("=")[1]);
+		index = Integer.parseInt(arr.get(1).split("-")[1]);
 
 	}
 
 	public String toSaveString()
 	{
-		return "AudioFile [FilePath=" + this.getPath() + "|| Selected=" + selected + "|| Index=" + index + "]";
-	}
-
-	public static Boolean getBool(String bool)
-	{
-		if (bool.equals("true"))
-		{
-			return true;
-		}
-		else if (bool.equals("false"))
-		{
-			return false;
-		}
-
-		return false;
-
+		return "AudioFile [FilePath-" + this.getPath() + "|| Index-" + index + "]";
 	}
 
 }

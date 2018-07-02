@@ -1,5 +1,6 @@
 package Main;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import javafx.application.Application;
@@ -13,7 +14,6 @@ import javafx.stage.Stage;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TitledPane;
 
-
 public class Main extends Application
 {
 	public static Stage stage;
@@ -21,6 +21,8 @@ public class Main extends Application
 	public static Controller controller;
 
 	public static ArrayList<Pane> audioButtons = new ArrayList<Pane>();
+
+	public static File saveFile;
 
 	public static void main(String[] args)
 	{
@@ -177,7 +179,7 @@ public class Main extends Application
 
 		for (int i = 0; i <= 11; i++)
 		{
-			audioButtons.add(new Pane(new AudioButton(), new Slider()));
+			audioButtons.add(new Pane(new AudioButton(), new Slider(), Integer.toString(i)));
 		}
 
 		Main.controller.grid.setAlignment(Pos.CENTER);
@@ -199,7 +201,6 @@ public class Main extends Application
 		Main.controller.grid.add(audioButtons.get(11), 2, 3);
 
 		stage = defaultStage;
-
 	}
 
 }

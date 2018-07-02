@@ -2,6 +2,7 @@ package Main;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javafx.application.Platform;
 import javafx.scene.media.Media;
@@ -12,12 +13,12 @@ import javafx.util.Duration;
 public class AudioChannel
 {
 	private boolean isPlaying;
-	private boolean repeat;
-	private String name;
-	private double volume;
-	private double delay;
-	private ArrayList<AudioFile> audioFiles = new ArrayList<AudioFile>();
-	public ArrayList<AudioFile> availableFiles = new ArrayList<AudioFile>();
+	private boolean repeat; // Save
+	private String name; // Save
+	private double volume; // Save
+	private double delay; // Save
+	private ArrayList<AudioFile> audioFiles = new ArrayList<AudioFile>(); // Save
+	public ArrayList<AudioFile> availableFiles = new ArrayList<AudioFile>(); // Save
 	public MediaView media;
 	ArrayList<MediaPlayer> players;
 	boolean ingnoreChange;
@@ -148,5 +149,34 @@ public class AudioChannel
 	public String toString()
 	{
 		return this.name;
+	}
+
+	// private boolean repeat; //Save
+	// private String name; //Save
+	// private double volume; //Save
+	// private double delay; //Save
+	// private ArrayList<AudioFile> audioFiles = new ArrayList<AudioFile>(); //Save
+	// public ArrayList<AudioFile> availableFiles = new ArrayList<AudioFile>(); //Save
+
+	public String toSaveString()
+	{
+		return "AudioChannel [Repeat=" + this.repeat + "|| Name=" + name + "|| Volume=" + this.volume + "|| Delay=" + this.delay + "|| AudioFiles=" + ConfigHandler.arrayToString(this.audioFiles) + "|| AvailableFiles="
+				+ ConfigHandler.arrayToString(this.availableFiles) + "]";
+	}
+
+	public AudioChannel(String data, String nothing)
+	{
+
+		data = data.substring(14, data.length() - 1);
+		ArrayList<String> arr = new ArrayList<String>();
+		arr.addAll(Arrays.asList(data.split("\\|\\|")));
+
+		repeat = ConfigHandler.getBool(arr.get(0).split("=")[1]);
+		name = arr.get(1).split("=")[1];
+		volume = Double.parseDouble(arr.get(2).split("=")[1]);
+		delay = Double.parseDouble(arr.get(3).split("=")[1]);
+		audioFiles = ConfigHandler.stringToArrayList(arr.get(4).split("=")[1]);
+		availableFiles = ConfigHandler.stringToArrayList(arr.get(5).split("=")[1]);
+
 	}
 }

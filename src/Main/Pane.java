@@ -1,5 +1,8 @@
 package Main;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Pos;
@@ -10,9 +13,11 @@ public class Pane extends BorderPane
 {
 	AudioButton button;
 	Slider volume;
+	String name;
 
-	public Pane(AudioButton button, Slider volume)
+	public Pane(AudioButton button, Slider volume, String name)
 	{
+		this.name = name;
 		this.button = button;
 		this.volume = volume;
 		this.volume.setValue(100);
@@ -35,7 +40,24 @@ public class Pane extends BorderPane
 		BorderPane.setAlignment(this.volume, Pos.CENTER);
 		this.setCenter(this.button);
 		this.setBottom(this.volume);
-		
+	}
 
+	public Pane(String data, String nothing)
+	{
+		System.out.println("FIRST : " + data);
+		data = data.substring(6, data.length() - 1);
+		System.out.println("SECOND : " + data);
+		ArrayList<String> arr = new ArrayList<String>();
+		arr.addAll(Arrays.asList(data.split("\\|\\|\\|\\|")));
+
+		System.out.println("THIRD : " + arr.get(0).split("=")[1]);
+		
+		button = new AudioButton(arr.get(0).split("=")[1], null);
+
+	}
+
+	public String toSaveString()
+	{
+		return "Pane [Button=" + this.button.toSaveString() + "|||| Name=" + name + "]";
 	}
 }
