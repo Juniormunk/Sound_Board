@@ -100,6 +100,8 @@ public class Controller
 
 	ArrayList<AudioFile> list = new ArrayList<AudioFile>();
 
+	File saveFile = null;
+
 	@SuppressWarnings("unchecked")
 	@FXML
 	void addAudioFile(MouseEvent event)
@@ -146,7 +148,7 @@ public class Controller
 
 			}
 		}
-		
+
 		// AudioChannel channel = new AudioChannel("Test");
 		// channel.playSound();
 	}
@@ -420,6 +422,7 @@ public class Controller
 				e.printStackTrace();
 			}
 		}
+
 	}
 
 	@FXML
