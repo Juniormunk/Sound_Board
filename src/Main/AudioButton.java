@@ -182,7 +182,7 @@ public class AudioButton extends ToggleButton
 		String audioFileString;
 		if (file != null)
 		{
-			audioFileString = file.toSaveString();
+			audioFileString = file.toSaveString("||");
 		}
 		else
 		{

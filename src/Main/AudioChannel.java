@@ -158,25 +158,34 @@ public class AudioChannel
 	// private ArrayList<AudioFile> audioFiles = new ArrayList<AudioFile>(); //Save
 	// public ArrayList<AudioFile> availableFiles = new ArrayList<AudioFile>(); //Save
 
-	public String toSaveString()
+	public String toSaveString(String seperator)
 	{
-		return "AudioChannel [Repeat=" + this.repeat + "|| Name=" + name + "|| Volume=" + this.volume + "|| Delay=" + this.delay + "|| AudioFiles=" + ConfigHandler.arrayToString(this.audioFiles) + "|| AvailableFiles="
-				+ ConfigHandler.arrayToString(this.availableFiles) + "]";
+
+		String arr1 = "QQQNULLQQQ";
+		String arr2 = "QQQNULLQQQ";
+
+		if (this.audioFiles.size() > 0)
+			arr1 = ConfigHandler.arrayToStringAudioFile(this.audioFiles, "||||");
+		if (this.availableFiles.size() > 0)
+			arr2 = ConfigHandler.arrayToStringAudioFile(this.availableFiles, "|||");
+
+		return "AudioChannel [Repeat=" + this.repeat + seperator + " Name=" + name + seperator + " Volume=" + this.volume + seperator + " Delay=" + this.delay + seperator + " AudioFiles=" + arr1 + seperator + " AvailableFiles=" + arr2
+				+ "]";
 	}
 
-	public AudioChannel(String data, String nothing)
+	public AudioChannel(String data, String seperator)
 	{
 
 		data = data.substring(14, data.length() - 1);
 		ArrayList<String> arr = new ArrayList<String>();
-		arr.addAll(Arrays.asList(data.split("\\|\\|")));
+		arr.addAll(Arrays.asList(data.split(seperator)));
 
 		repeat = ConfigHandler.getBool(arr.get(0).split("=")[1]);
 		name = arr.get(1).split("=")[1];
 		volume = Double.parseDouble(arr.get(2).split("=")[1]);
 		delay = Double.parseDouble(arr.get(3).split("=")[1]);
-		audioFiles = ConfigHandler.stringToArrayList(arr.get(4).split("=")[1]);
-		availableFiles = ConfigHandler.stringToArrayList(arr.get(5).split("=")[1]);
+		audioFiles = ConfigHandler.stringToArrayListAudioFile(arr.get(4).split("=")[1], "\\|\\|\\|\\|");
+		availableFiles = ConfigHandler.stringToArrayListAudioFile(arr.get(5).split("=")[1], "\\|\\|\\|");
 
 	}
 }

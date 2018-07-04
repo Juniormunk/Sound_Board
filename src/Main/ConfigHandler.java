@@ -29,21 +29,36 @@ public class ConfigHandler
 	}
 
 	// For Save
-	public static String arrayToString(ArrayList<AudioFile> files)
+	public static String arrayToStringAudioFile(ArrayList<AudioFile> files, String seperator)
 	{
 		ArrayList<String> outputlist = new ArrayList<String>();
 
 		for (AudioFile file : files)
 		{
-			outputlist.add(file.toSaveString());
+			outputlist.add(file.toSaveString("||"));
 		}
 
-		String output = String.join("|||||", outputlist);
+		// String output = String.join("|||||", outputlist);
+		String output = String.join(seperator, outputlist);
 
 		return output;
 	}
 
-	public static String arrayToString(ArrayList<Pane> files, String nothing)
+	public static String arrayToStringAudioChannel(ArrayList<AudioChannel> files, String seperator)
+	{
+		ArrayList<String> outputlist = new ArrayList<String>();
+
+		for (AudioChannel file : files)
+		{
+			outputlist.add(file.toSaveString("|||||"));
+		}
+
+		String output = String.join(seperator, outputlist);
+
+		return output;
+	}
+
+	public static String arrayToStringPane(ArrayList<Pane> files, String seperator)
 	{
 		ArrayList<String> outputlist = new ArrayList<String>();
 
@@ -52,34 +67,53 @@ public class ConfigHandler
 			outputlist.add(file.toSaveString());
 		}
 
-		String output = String.join("|||||", outputlist);
+		String output = String.join(seperator, outputlist);
 
 		return output;
 	}
 
 	// For Load
-	public static ArrayList<AudioFile> stringToArrayList(String array)
+	public static ArrayList<AudioFile> stringToArrayListAudioFile(String array, String seperator)
 	{
 		ArrayList<AudioFile> allFiles = new ArrayList<AudioFile>();
 		ArrayList<String> allwords = new ArrayList<String>();
 
-		allwords.addAll(Arrays.asList(array.split("\\|\\|\\|\\|\\|")));
+		allwords.addAll(Arrays.asList(array.split(seperator)));
 
 		for (String fileString : allwords)
 		{
-			AudioFile file = new AudioFile(fileString, null);
+			if (!fileString.equals("QQQNULLQQQ"))
+			{
+				AudioFile file = new AudioFile(fileString, null);
+				allFiles.add(file);
+			}
+		}
+
+		return allFiles;
+	}
+
+	public static ArrayList<AudioChannel> stringToArrayListAudioChannel(String array, String seperator)
+	{
+		ArrayList<AudioChannel> allFiles = new ArrayList<AudioChannel>();
+		ArrayList<String> allwords = new ArrayList<String>();
+
+		allwords.addAll(Arrays.asList(array.split(seperator)));
+
+		for (String fileString : allwords)
+		{
+			AudioChannel file = new AudioChannel(fileString, "\\|\\|\\|\\|\\|");
 			allFiles.add(file);
 		}
 
 		return allFiles;
 	}
 
-	public static ArrayList<Pane> stringToArrayList(String array, String nothing)
+	public static ArrayList<Pane> stringToArrayListPane(String array, String seperator)
 	{
 		ArrayList<Pane> allFiles = new ArrayList<Pane>();
 		ArrayList<String> allwords = new ArrayList<String>();
 
-		allwords.addAll(Arrays.asList(array.split("\\|\\|\\|\\|\\|")));
+		allwords.addAll(Arrays.asList(array.split(seperator)));
 
 		System.out.println("StringToArrayListPANE : " + allwords + "END");
 		int i = 0;
@@ -96,13 +130,16 @@ public class ConfigHandler
 	public void load()
 	{
 
-		Main.updateGrid(stringToArrayList(props.getProperty("Buttons"), null));
+		Main.updateGrid(stringToArrayListPane(props.getProperty("Buttons"), "\\|\\|\\|\\|\\|"));
+		Main.audioChannels = stringToArrayListAudioChannel(props.getProperty("AudioChannels"), "\\|\\|\\|\\|\\|\\|");
+		Main.controller.refreshAudioChennels();
 
 	}
 
 	public void save() throws IOException
 	{
-		props.setProperty("Buttons", arrayToString(Main.audioButtons, null));
+		props.setProperty("Buttons", arrayToStringPane(Main.audioButtons, "|||||"));
+		props.setProperty("AudioChannels", arrayToStringAudioChannel(Main.audioChannels, "||||||"));
 		props.store(output, null);
 	}
 

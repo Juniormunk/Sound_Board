@@ -34,6 +34,8 @@ public class AudioFile extends File
 	{
 
 		super(Arrays.asList(data.substring(11, data.length() - 1).split("\\|\\|")).get(0).split("-")[1]);
+
+		System.out.println(data);
 		
 		data = data.substring(11, data.length() - 1);
 		ArrayList<String> arr = new ArrayList<String>();
@@ -42,9 +44,9 @@ public class AudioFile extends File
 
 	}
 
-	public String toSaveString()
+	public String toSaveString(String seperator)
 	{
-		return "AudioFile [FilePath-" + this.getPath() + "|| Index-" + index + "]";
+		return "AudioFile [FilePath-" + this.getPath() + seperator + " Index-" + index + "]";
 	}
 
 }

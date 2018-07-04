@@ -110,7 +110,7 @@ public class Main extends Application
 					Main.controller.addAudio.setDisable(true);
 					Main.controller.removeAudio.setDisable(true);
 					Main.controller.clearOrder();
-					// Main.controller.audiofiles.getItems().clear();
+					Main.controller.audiofiles.getItems().clear();
 
 				}
 				if (Main.controller.channels.getSelectionModel().getSelectedItem() != null)
