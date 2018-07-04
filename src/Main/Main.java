@@ -203,4 +203,39 @@ public class Main extends Application
 		stage = defaultStage;
 	}
 
+	public static void updateGrid(ArrayList<Pane> arr)
+	{
+		Main.controller.grid.getChildren().clear();
+		
+		
+		audioButtons.clear();
+		
+		for (int i = 0; i <= 11; i++)
+		{
+			audioButtons.add(arr.get(i));
+		}
+		for (Pane file : Main.audioButtons)
+		{
+			System.out.println(file.button.name);
+		}
+		Main.controller.grid.setAlignment(Pos.CENTER);
+
+		Main.controller.grid.add(audioButtons.get(0), 0, 0);
+		Main.controller.grid.add(audioButtons.get(1), 1, 0);
+		Main.controller.grid.add(audioButtons.get(2), 2, 0);
+
+		Main.controller.grid.add(audioButtons.get(3), 0, 1);
+		Main.controller.grid.add(audioButtons.get(4), 1, 1);
+		Main.controller.grid.add(audioButtons.get(5), 2, 1);
+
+		Main.controller.grid.add(audioButtons.get(6), 0, 2);
+		Main.controller.grid.add(audioButtons.get(7), 1, 2);
+		Main.controller.grid.add(audioButtons.get(8), 2, 2);
+
+		Main.controller.grid.add(audioButtons.get(9), 0, 3);
+		Main.controller.grid.add(audioButtons.get(10), 1, 3);
+		Main.controller.grid.add(audioButtons.get(11), 2, 3);
+
+	}
+
 }

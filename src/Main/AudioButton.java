@@ -61,6 +61,20 @@ public class AudioButton extends ToggleButton
 
 		volume = Double.parseDouble(arr.get(2).split("~")[1]);
 
+		if (name.equals("QQQNULLQQQ"))
+		{
+			name = "";
+		}
+
+		this.setText(name);
+		this.setPrefSize(120, 120);
+		this.setAlignment(Pos.CENTER);
+		this.setOnAction(this::Clicked);
+		linkAudio.setOnAction(this::LinkAudio);
+		rename.setOnAction(this::Rename);
+		context.getItems().addAll(linkAudio, rename);
+		this.setContextMenu(context);
+		setVolume(volume);
 	}
 
 	// TODO: ADD END FEATURE
@@ -175,17 +189,26 @@ public class AudioButton extends ToggleButton
 			audioFileString = "null";
 		}
 
+		if (name == null || name.equals(""))
+		{
+			name = "QQQNULLQQQ";
+		}
+
 		return "AudioButton [Name~" + this.name + "||| AudioFile~" + audioFileString + "||| Volume~" + this.volume + "]";
 	}
 
 	void setVolume(double volume)
 	{
+		System.out.println(volume);
+
+		this.volume = volume;
+
 		if (buttonPlayer != null)
 		{
 			buttonPlayer.setVolume(volume);
 		}
 
-		this.volume = volume;
+
 	}
 
 }

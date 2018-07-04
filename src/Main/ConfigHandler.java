@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Properties;
 
+import javafx.geometry.Pos;
+
 public class ConfigHandler
 {
 	Properties props;
@@ -80,10 +82,11 @@ public class ConfigHandler
 		allwords.addAll(Arrays.asList(array.split("\\|\\|\\|\\|\\|")));
 
 		System.out.println("StringToArrayListPANE : " + allwords + "END");
-
+		int i = 0;
 		for (String fileString : allwords)
 		{
 			Pane file = new Pane(fileString, null);
+			file.name = Integer.toString(i++);
 			allFiles.add(file);
 		}
 
@@ -92,26 +95,9 @@ public class ConfigHandler
 
 	public void load()
 	{
-		Main.audioButtons = stringToArrayList(props.getProperty("Buttons"), null);
 
-		System.out.println(Main.audioButtons);
+		Main.updateGrid(stringToArrayList(props.getProperty("Buttons"), null));
 
-		Main.controller.grid.add(Main.audioButtons.get(0), 0, 0);
-		Main.controller.grid.add(Main.audioButtons.get(1), 1, 0);
-		Main.controller.grid.add(Main.audioButtons.get(2), 2, 0);
-
-		Main.controller.grid.add(Main.audioButtons.get(3), 0, 1);
-		Main.controller.grid.add(Main.audioButtons.get(4), 1, 1);
-		Main.controller.grid.add(Main.audioButtons.get(5), 2, 1);
-
-		Main.controller.grid.add(Main.audioButtons.get(6), 0, 2);
-		Main.controller.grid.add(Main.audioButtons.get(7), 1, 2);
-		Main.controller.grid.add(Main.audioButtons.get(8), 2, 2);
-
-		Main.controller.grid.add(Main.audioButtons.get(9), 0, 3);
-		Main.controller.grid.add(Main.audioButtons.get(10), 1, 3);
-		Main.controller.grid.add(Main.audioButtons.get(11), 2, 3);
-		
 	}
 
 	public void save() throws IOException

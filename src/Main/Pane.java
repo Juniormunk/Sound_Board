@@ -30,10 +30,8 @@ public class Pane extends BorderPane
 		{
 			public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val)
 			{
-				if (button.buttonPlayer != null)
-				{
+
 					button.setVolume(new_val.doubleValue() / 100.0);
-				}
 			}
 		});
 		BorderPane.setAlignment(this.button, Pos.CENTER);
@@ -44,6 +42,7 @@ public class Pane extends BorderPane
 
 	public Pane(String data, String nothing)
 	{
+
 		System.out.println("FIRST : " + data);
 		data = data.substring(6, data.length() - 1);
 		System.out.println("SECOND : " + data);
@@ -51,8 +50,28 @@ public class Pane extends BorderPane
 		arr.addAll(Arrays.asList(data.split("\\|\\|\\|\\|")));
 
 		System.out.println("THIRD : " + arr.get(0).split("=")[1]);
-		
+
 		button = new AudioButton(arr.get(0).split("=")[1], null);
+		name = arr.get(1).split("=")[1];
+
+		this.volume = new Slider();
+		this.volume.setValue(button.volume*100.0);
+		this.volume.setShowTickLabels(true);
+		this.volume.majorTickUnitProperty().set(25);
+		this.volume.setPrefWidth(120);
+		this.volume.setMaxWidth(120);
+		this.volume.setMinWidth(120);
+		this.volume.valueProperty().addListener(new ChangeListener<Number>()
+		{
+			public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val)
+			{
+				button.setVolume(new_val.doubleValue() / 100.0);
+			}
+		});
+		BorderPane.setAlignment(this.button, Pos.CENTER);
+		BorderPane.setAlignment(this.volume, Pos.CENTER);
+		this.setCenter(this.button);
+		this.setBottom(this.volume);
 
 	}
 
