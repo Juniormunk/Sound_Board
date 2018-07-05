@@ -23,8 +23,6 @@ public class Main extends Application
 
 	public static ArrayList<Pane> audioButtons = new ArrayList<Pane>();
 
-	public static File saveFile;
-
 	public static void main(String[] args)
 	{
 		launch(args);
@@ -115,6 +113,7 @@ public class Main extends Application
 				}
 				if (Main.controller.channels.getSelectionModel().getSelectedItem() != null)
 				{
+					Main.controller.audioPane.setExpanded(true);
 					Main.controller.audiofiles.setDisable(false);
 					Main.controller.order.setDisable(false);
 					Main.controller.addAudio.setDisable(false);
@@ -201,16 +200,17 @@ public class Main extends Application
 		Main.controller.grid.add(audioButtons.get(10), 1, 3);
 		Main.controller.grid.add(audioButtons.get(11), 2, 3);
 
+		Main.controller.buttonPane.setExpanded(true);
+
 		stage = defaultStage;
 	}
 
 	public static void updateGrid(ArrayList<Pane> arr)
 	{
 		Main.controller.grid.getChildren().clear();
-		
-		
+
 		audioButtons.clear();
-		
+
 		for (int i = 0; i <= 11; i++)
 		{
 			audioButtons.add(arr.get(i));

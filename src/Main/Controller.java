@@ -364,7 +364,28 @@ public class Controller
 	@FXML
 	void save(ActionEvent event)
 	{
-		System.out.println("SAVE");
+		if (saveFile != null)
+		{
+			try
+			{
+				saveFile.createNewFile();
+			}
+			catch (IOException e1)
+			{
+				e1.printStackTrace();
+			}
+			try
+			{
+				ConfigHandler handle = new ConfigHandler(saveFile, true);
+
+				handle.save();
+
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
 	}
 
 	@FXML
@@ -376,7 +397,15 @@ public class Controller
 
 		ExtensionFilter filter = new FileChooser.ExtensionFilter("Properties File", "*.properties");
 		fileChooser.getExtensionFilters().add(filter);
-		File file = fileChooser.showOpenDialog(Main.stage);
+		File file = fileChooser.showSaveDialog(Main.stage);
+		try
+		{
+			file.createNewFile();
+		}
+		catch (IOException e1)
+		{
+			e1.printStackTrace();
+		}
 		if (file != null)
 		{
 			try
@@ -402,6 +431,7 @@ public class Controller
 	@FXML
 	void openSave(ActionEvent event)
 	{
+
 		FileChooser fileChooser = new FileChooser();
 
 		fileChooser.setTitle("Open Resource File");
@@ -415,6 +445,12 @@ public class Controller
 			{
 				ConfigHandler handle = new ConfigHandler(file, false);
 				handle.load();
+				for (Pane audio : Main.audioButtons)
+				{
+
+					audio.button.deselect();
+
+				}
 
 			}
 			catch (IOException e)

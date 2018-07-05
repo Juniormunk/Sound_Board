@@ -101,8 +101,11 @@ public class ConfigHandler
 
 		for (String fileString : allwords)
 		{
-			AudioChannel file = new AudioChannel(fileString, "\\|\\|\\|\\|\\|");
-			allFiles.add(file);
+			if (fileString.length() > 0)
+			{
+				AudioChannel file = new AudioChannel(fileString, "\\|\\|\\|\\|\\|");
+				allFiles.add(file);
+			}
 		}
 
 		return allFiles;

@@ -63,7 +63,7 @@ public class AudioButton extends ToggleButton
 
 		if (name.equals("QQQNULLQQQ"))
 		{
-			name = "";
+			name = null;
 		}
 
 		this.setText(name);
@@ -207,7 +207,6 @@ public class AudioButton extends ToggleButton
 		{
 			buttonPlayer.setVolume(volume);
 		}
-
 
 	}
 
