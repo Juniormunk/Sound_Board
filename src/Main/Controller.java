@@ -278,7 +278,11 @@ public class Controller
 	{
 		move(selectedChannel.getAudioFiles(), (AudioFile) order.getSelectionModel().getSelectedItem(), 1);
 	}
+	
+	
 
+
+	
 	@FXML
 	void orderUp(ActionEvent event)
 	{
@@ -336,6 +340,12 @@ public class Controller
 		{
 			selectedChannel.setRepeat(repeat.isSelected());
 		}
+	}
+	
+	@FXML
+	void selectRandomDelay(ActionEvent event)
+	{
+		selectedChannel.set
 	}
 
 	@SuppressWarnings("unchecked")

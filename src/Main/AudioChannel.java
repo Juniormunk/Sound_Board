@@ -3,6 +3,7 @@ package Main;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 import javafx.application.Platform;
 import javafx.scene.media.Media;
@@ -14,6 +15,9 @@ public class AudioChannel
 {
 	private boolean isPlaying;
 	private boolean repeat; // Save
+	private boolean repeatDelay; // Add Save
+	private double minDelay;
+	private double maxDelay;
 	private String name; // Save
 	private double volume; // Save
 	private double delay; // Save
@@ -55,14 +59,48 @@ public class AudioChannel
 					final MediaPlayer player = players.get(j);
 					final MediaPlayer nextPlayer = players.get((j + 1) % players.size());
 
+					player.setOnPlaying(new Runnable()
+					{
+						@Override
+						public void run()
+						{
+							System.out.println("Running");
+						}
+					});
+					nextPlayer.setOnPlaying(new Runnable()
+					{
+						@Override
+						public void run()
+						{
+							System.out.println("Running");
+						}
+					});
+
+
 					player.setOnEndOfMedia(new Runnable()
 					{
 						@Override
 						public void run()
 						{
+							System.out.println("Done");
+
 							if (repeat)
 							{
 								nextPlayer.seek(Duration.ZERO);
+							}
+							if (repeatDelay)
+							{
+								Random rand = new Random();
+								double randomValue = minDelay + (maxDelay - minDelay) * rand.nextDouble();
+
+								try
+								{
+									Thread.sleep((long) randomValue * 1000);
+								}
+								catch (InterruptedException e)
+								{
+									e.printStackTrace();
+								}
 							}
 							media.setMediaPlayer(nextPlayer);
 							nextPlayer.play();
@@ -156,7 +194,8 @@ public class AudioChannel
 	// private double volume; //Save
 	// private double delay; //Save
 	// private ArrayList<AudioFile> audioFiles = new ArrayList<AudioFile>(); //Save
-	// public ArrayList<AudioFile> availableFiles = new ArrayList<AudioFile>(); //Save
+	// public ArrayList<AudioFile> availableFiles = new ArrayList<AudioFile>();
+	// //Save
 
 	public String toSaveString(String seperator)
 	{
@@ -169,8 +208,9 @@ public class AudioChannel
 		if (this.availableFiles.size() > 0)
 			arr2 = ConfigHandler.arrayToStringAudioFile(this.availableFiles, "|||");
 
-		return "AudioChannel [Repeat=" + this.repeat + seperator + " Name=" + name + seperator + " Volume=" + this.volume + seperator + " Delay=" + this.delay + seperator + " AudioFiles=" + arr1 + seperator + " AvailableFiles=" + arr2
-				+ "]";
+		return "AudioChannel [Repeat=" + this.repeat + seperator + " Name=" + name + seperator + " Volume="
+				+ this.volume + seperator + " Delay=" + this.delay + seperator + " AudioFiles=" + arr1 + seperator
+				+ " AvailableFiles=" + arr2 + "]";
 	}
 
 	public AudioChannel(String data, String seperator)
@@ -188,4 +228,25 @@ public class AudioChannel
 		availableFiles = ConfigHandler.stringToArrayListAudioFile(arr.get(5).split("=")[1], "\\|\\|\\|");
 
 	}
+
+	public double getMinDelay()
+	{
+		return minDelay;
+	}
+
+	public void setMinDelay(double minDelay)
+	{
+		this.minDelay = minDelay;
+	}
+
+	public double getMaxDelay()
+	{
+		return maxDelay;
+	}
+
+	public void setMaxDelay(double maxDelay)
+	{
+		this.maxDelay = maxDelay;
+	}
+	repeatDelay
 }
