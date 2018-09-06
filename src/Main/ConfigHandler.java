@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Properties;
 
-import javafx.geometry.Pos;
-
 public class ConfigHandler
 {
 	Properties props;

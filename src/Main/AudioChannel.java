@@ -27,6 +27,7 @@ public class AudioChannel
 	ArrayList<MediaPlayer> players;
 	boolean ingnoreChange;
 	boolean isPaused;
+	private boolean isRandom;
 
 	public AudioChannel(String name)
 	{
@@ -82,12 +83,11 @@ public class AudioChannel
 						@Override
 						public void run()
 						{
-							System.out.println("Done");
-
 							if (repeat)
 							{
 								nextPlayer.seek(Duration.ZERO);
 							}
+							System.out.println("Before ran");
 							if (repeatDelay)
 							{
 								Random rand = new Random();
@@ -104,6 +104,7 @@ public class AudioChannel
 							}
 							media.setMediaPlayer(nextPlayer);
 							nextPlayer.play();
+							System.out.println("Next");
 
 						}
 					});
@@ -248,5 +249,18 @@ public class AudioChannel
 	{
 		this.maxDelay = maxDelay;
 	}
-	repeatDelay
+	public void setRandomDelay(boolean doDelay)
+	{
+		this.repeatDelay=doDelay;
+	}
+
+	public boolean isRandom()
+	{
+		return isRandom;
+	}
+
+	public void setRandom(boolean isRandom)
+	{
+		this.isRandom = isRandom;
+	}
 }

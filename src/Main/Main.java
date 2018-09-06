@@ -1,7 +1,6 @@
 
 package Main;
 
-
 import java.util.ArrayList;
 
 import javafx.application.Application;
@@ -107,6 +106,11 @@ public class Main extends Application
 					Main.controller.order.setDisable(true);
 					Main.controller.addAudio.setDisable(true);
 					Main.controller.removeAudio.setDisable(true);
+					Main.controller.repeat.setDisable(true);
+					Main.controller.delay.setDisable(true);
+					Main.controller.random.setDisable(true);
+					Main.controller.minRanDel.setDisable(true);
+					Main.controller.maxRanDel.setDisable(true);
 					Main.controller.clearOrder();
 					Main.controller.audiofiles.getItems().clear();
 
@@ -118,9 +122,16 @@ public class Main extends Application
 					Main.controller.order.setDisable(false);
 					Main.controller.addAudio.setDisable(false);
 					Main.controller.removeAudio.setDisable(false);
+					Main.controller.repeat.setDisable(false);
+					Main.controller.delay.setDisable(false);
+					Main.controller.random.setDisable(false);
+					Main.controller.minRanDel.setDisable(false);
+					Main.controller.maxRanDel.setDisable(false);
 					Main.controller.lastSelectedChannel = Main.controller.selectedChannel;
 					Main.controller.selectedChannel = (AudioChannel) Main.controller.channels.getSelectionModel().getSelectedItem();
-
+					
+					
+					
 					if (Main.controller.lastSelectedChannel != Main.controller.selectedChannel)
 					{
 						Main.controller.selectedChannel.ingnoreChange = true;
@@ -135,12 +146,46 @@ public class Main extends Application
 						}
 
 						Main.controller.repeat.setSelected(Main.controller.selectedChannel.isRepeat());
+						Main.controller.random.setSelected(Main.controller.selectedChannel.isRandom());
 
 						Main.controller.refreshOrder();
 
 						Main.controller.selectedChannel.ingnoreChange = false;
 					}
 
+				}
+			}
+		});
+		
+		Main.controller.delay.valueProperty().addListener(new ChangeListener<Number>()
+		{
+			public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val)
+			{
+				if (Main.controller.selectedChannel != null)
+				{
+					Main.controller.selectedChannel.setDelay((double) new_val);
+				}
+			}
+		});
+		
+		Main.controller.minRanDel.valueProperty().addListener(new ChangeListener<Number>()
+		{
+			public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val)
+			{
+				if (Main.controller.selectedChannel != null)
+				{
+					Main.controller.selectedChannel.setMinDelay((double) new_val);
+				}
+			}
+		});
+		
+		Main.controller.maxRanDel.valueProperty().addListener(new ChangeListener<Number>()
+		{
+			public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val)
+			{
+				if (Main.controller.selectedChannel != null)
+				{
+					Main.controller.selectedChannel.setMaxDelay((double) new_val);
 				}
 			}
 		});

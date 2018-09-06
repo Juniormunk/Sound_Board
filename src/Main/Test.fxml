@@ -70,12 +70,12 @@
 		<Button layoutX="375.0" layoutY="762.0" mnemonicParsing="false" onMouseClicked="#pause" style="-fx-background-radius: 0;" text="Pause" />
 		<Button fx:id="Start" layoutX="326.0" layoutY="762.0" mnemonicParsing="false" onMouseClicked="#Start" style="-fx-background-radius: 0;" text="Play" />
 		<Button layoutX="429.0" layoutY="762.0" mnemonicParsing="false" onMouseClicked="#stop" style="-fx-background-radius: 0;" text="Stop" />
-		<Spinner fx:id="minRanDel" layoutX="304.0" layoutY="165.0" prefHeight="25.0" prefWidth="74.0" style="-fx-background-radius: 0;">
+		<Spinner fx:id="minRanDel" editable="true" layoutX="304.0" layoutY="165.0" prefHeight="25.0" prefWidth="74.0" style="-fx-background-radius: 0;">
 			<valueFactory>
 				<SpinnerValueFactory.DoubleSpinnerValueFactory amountToStepBy="1" initialValue="0" max="10000" min="-10000" />
 			</valueFactory>
 		</Spinner>
-		<Spinner fx:id="maxRanDel" layoutX="399.0" layoutY="165.0" prefHeight="25.0" prefWidth="74.0" style="-fx-background-radius: 0;">
+		<Spinner fx:id="maxRanDel" editable="true" layoutX="399.0" layoutY="165.0" prefHeight="25.0" prefWidth="74.0" style="-fx-background-radius: 0;">
 			<valueFactory>
 				<SpinnerValueFactory.DoubleSpinnerValueFactory amountToStepBy="1" initialValue="0" max="10000" min="-10000" />
 			</valueFactory>
