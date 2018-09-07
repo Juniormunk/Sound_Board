@@ -146,7 +146,10 @@ public class Main extends Application
 						}
 
 						Main.controller.repeat.setSelected(Main.controller.selectedChannel.isRepeat());
+						
 						Main.controller.random.setSelected(Main.controller.selectedChannel.isRandom());
+						
+						
 
 						Main.controller.refreshOrder();
 

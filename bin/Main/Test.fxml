@@ -60,9 +60,9 @@
 		<Button fx:id="addChannel" layoutX="55.0" layoutY="749.0" mnemonicParsing="false" onMouseClicked="#addChannel" style="-fx-background-radius: 0;" text="Add" />
 		<Button fx:id="removeChannel" layoutX="162.0" layoutY="749.0" mnemonicParsing="false" onMouseClicked="#removeChannel" style="-fx-background-radius: 0;" text="Remove" />
 		<Slider fx:id="volume" layoutX="265.0" layoutY="63.0" majorTickUnit="10.0" orientation="VERTICAL" prefHeight="675.0" prefWidth="21.0" showTickLabels="true" showTickMarks="true" style="-fx-color: #4a9be8; -fx-control-inner-background: #9e9e9e;" value="100.0" />
-		<CheckBox fx:id="repeat" layoutX="304.0" layoutY="63.0" mnemonicParsing="false" onAction="#selectRepeat" style="-fx-background-radius: 0;" text="Repeat" />
+		<CheckBox fx:id="repeat" disable="true" layoutX="304.0" layoutY="63.0" mnemonicParsing="false" onAction="#selectRepeat" style="-fx-background-radius: 0;" text="Repeat" />
 		<Text layoutX="304.0" layoutY="100.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Delay :" wrappingWidth="73.99999350309372" />
-		<Spinner fx:id="delay" editable="true" layoutX="304.0" layoutY="104.0" prefHeight="25.0" prefWidth="74.0" style="-fx-background-radius: 0;">
+		<Spinner fx:id="delay" disable="true" editable="true" layoutX="304.0" layoutY="104.0" prefHeight="25.0" prefWidth="74.0" style="-fx-background-radius: 0;">
 			<valueFactory>
 				<SpinnerValueFactory.DoubleSpinnerValueFactory amountToStepBy=".1" initialValue="0" max="1000" min="-1000" />
 			</valueFactory>
@@ -70,12 +70,12 @@
 		<Button layoutX="375.0" layoutY="762.0" mnemonicParsing="false" onMouseClicked="#pause" style="-fx-background-radius: 0;" text="Pause" />
 		<Button fx:id="Start" layoutX="326.0" layoutY="762.0" mnemonicParsing="false" onMouseClicked="#Start" style="-fx-background-radius: 0;" text="Play" />
 		<Button layoutX="429.0" layoutY="762.0" mnemonicParsing="false" onMouseClicked="#stop" style="-fx-background-radius: 0;" text="Stop" />
-		<Spinner fx:id="minRanDel" editable="true" layoutX="304.0" layoutY="165.0" prefHeight="25.0" prefWidth="74.0" style="-fx-background-radius: 0;">
+		<Spinner fx:id="minRanDel" disable="true" editable="true" layoutX="304.0" layoutY="165.0" prefHeight="25.0" prefWidth="74.0" style="-fx-background-radius: 0;">
 			<valueFactory>
 				<SpinnerValueFactory.DoubleSpinnerValueFactory amountToStepBy="1" initialValue="0" max="10000" min="-10000" />
 			</valueFactory>
 		</Spinner>
-		<Spinner fx:id="maxRanDel" editable="true" layoutX="399.0" layoutY="165.0" prefHeight="25.0" prefWidth="74.0" style="-fx-background-radius: 0;">
+		<Spinner fx:id="maxRanDel" disable="true" editable="true" layoutX="399.0" layoutY="165.0" prefHeight="25.0" prefWidth="74.0" style="-fx-background-radius: 0;">
 			<valueFactory>
 				<SpinnerValueFactory.DoubleSpinnerValueFactory amountToStepBy="1" initialValue="0" max="10000" min="-10000" />
 			</valueFactory>
@@ -85,7 +85,7 @@
 				<Font name="System Bold" size="23.0" />
 			</font>
 		</Text>
-		<CheckBox fx:id="random" layoutX="304.0" layoutY="138.0" mnemonicParsing="false" onAction="#selectRandomDelay" style="-fx-background-radius: 0;" text="Random Delay" />
+		<CheckBox fx:id="random" disable="true" layoutX="304.0" layoutY="138.0" mnemonicParsing="false" onAction="#selectRandomDelay" style="-fx-background-radius: 0;" text="Random Delay" />
       <Accordion fx:id="accordion" layoutX="500.0" prefHeight="800.0" prefWidth="500.0">
          <panes>
           <TitledPane fx:id="audioPane" prefHeight="25.0" prefWidth="500.0" style="-fx-background-radius: 0;" text="Audio Files">

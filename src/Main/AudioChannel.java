@@ -27,7 +27,6 @@ public class AudioChannel
 	ArrayList<MediaPlayer> players;
 	boolean ingnoreChange;
 	boolean isPaused;
-	private boolean isRandom;
 
 	public AudioChannel(String name)
 	{
@@ -76,7 +75,6 @@ public class AudioChannel
 							System.out.println("Running");
 						}
 					});
-
 
 					player.setOnEndOfMedia(new Runnable()
 					{
@@ -209,9 +207,8 @@ public class AudioChannel
 		if (this.availableFiles.size() > 0)
 			arr2 = ConfigHandler.arrayToStringAudioFile(this.availableFiles, "|||");
 
-		return "AudioChannel [Repeat=" + this.repeat + seperator + " Name=" + name + seperator + " Volume="
-				+ this.volume + seperator + " Delay=" + this.delay + seperator + " AudioFiles=" + arr1 + seperator
-				+ " AvailableFiles=" + arr2 + "]";
+		return "AudioChannel [Repeat=" + this.repeat + seperator + " Name=" + name + seperator + " Volume=" + this.volume + seperator + " Delay=" + this.delay + seperator + " AudioFiles=" + arr1 + seperator + " AvailableFiles=" + arr2
+				+ seperator + " minRanDel=" + minDelay + seperator + " maxRanDel=" + maxDelay + seperator + " doRandom=" + repeatDelay + "]";
 	}
 
 	public AudioChannel(String data, String seperator)
@@ -227,6 +224,9 @@ public class AudioChannel
 		delay = Double.parseDouble(arr.get(3).split("=")[1]);
 		audioFiles = ConfigHandler.stringToArrayListAudioFile(arr.get(4).split("=")[1], "\\|\\|\\|\\|");
 		availableFiles = ConfigHandler.stringToArrayListAudioFile(arr.get(5).split("=")[1], "\\|\\|\\|");
+		minDelay = Double.parseDouble(arr.get(6).split("=")[1]);
+		maxDelay = Double.parseDouble(arr.get(7).split("=")[1]);
+		repeatDelay = ConfigHandler.getBool(arr.get(8).split("=")[1]);
 
 	}
 
@@ -249,18 +249,14 @@ public class AudioChannel
 	{
 		this.maxDelay = maxDelay;
 	}
+
 	public void setRandomDelay(boolean doDelay)
 	{
-		this.repeatDelay=doDelay;
+		this.repeatDelay = doDelay;
 	}
 
 	public boolean isRandom()
 	{
-		return isRandom;
-	}
-
-	public void setRandom(boolean isRandom)
-	{
-		this.isRandom = isRandom;
+		return repeatDelay;
 	}
 }
