@@ -278,7 +278,7 @@ public class Controller
 	{
 		move(selectedChannel.getAudioFiles(), (AudioFile) order.getSelectionModel().getSelectedItem(), 1);
 	}
-	
+
 	@FXML
 	void orderUp(ActionEvent event)
 	{
@@ -337,7 +337,8 @@ public class Controller
 			selectedChannel.setRepeat(repeat.isSelected());
 		}
 	}
-//ToDo: still can't remember what i was doing here....	
+
+	// ToDo: still can't remember what i was doing here....
 	@FXML
 	void selectRandomDelay(ActionEvent event)
 	{
@@ -419,6 +420,7 @@ public class Controller
 				ConfigHandler handle = new ConfigHandler(file, true);
 
 				handle.save();
+				saveFile = file;
 
 			}
 			catch (IOException e)
@@ -437,7 +439,19 @@ public class Controller
 	@FXML
 	void openSave(ActionEvent event)
 	{
-
+		for (Pane audio : Main.audioButtons)
+		{
+			if (audio.button.isPlaying)
+			{
+				audio.button.buttonPlayer.stop();
+				audio.button.isPlaying = false;
+			}
+		}
+		for (AudioChannel channel : Main.audioChannels)
+		{
+			channel.media.getMediaPlayer().stop();
+			channel.setPlaying(false);
+		}
 		FileChooser fileChooser = new FileChooser();
 
 		fileChooser.setTitle("Open Resource File");
@@ -445,6 +459,7 @@ public class Controller
 		ExtensionFilter filter = new FileChooser.ExtensionFilter("Properties File", "*.properties");
 		fileChooser.getExtensionFilters().add(filter);
 		File file = fileChooser.showOpenDialog(Main.stage);
+
 		if (file != null)
 		{
 			try

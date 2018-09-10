@@ -95,71 +95,75 @@ public class Main extends Application
 			}
 		});
 
-		Main.controller.channels.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<AudioChannel>()
-		{
-			@Override
-			public void changed(ObservableValue<? extends AudioChannel> observable, AudioChannel oldValue, AudioChannel newValue)
-			{
-				if (newValue == null)
+		Main.controller.channels.getSelectionModel().selectedItemProperty()
+				.addListener(new ChangeListener<AudioChannel>()
 				{
-					Main.controller.audiofiles.setDisable(true);
-					Main.controller.order.setDisable(true);
-					Main.controller.addAudio.setDisable(true);
-					Main.controller.removeAudio.setDisable(true);
-					Main.controller.repeat.setDisable(true);
-					Main.controller.delay.setDisable(true);
-					Main.controller.random.setDisable(true);
-					Main.controller.minRanDel.setDisable(true);
-					Main.controller.maxRanDel.setDisable(true);
-					Main.controller.clearOrder();
-					Main.controller.audiofiles.getItems().clear();
-
-				}
-				if (Main.controller.channels.getSelectionModel().getSelectedItem() != null)
-				{
-					Main.controller.audioPane.setExpanded(true);
-					Main.controller.audiofiles.setDisable(false);
-					Main.controller.order.setDisable(false);
-					Main.controller.addAudio.setDisable(false);
-					Main.controller.removeAudio.setDisable(false);
-					Main.controller.repeat.setDisable(false);
-					Main.controller.delay.setDisable(false);
-					Main.controller.random.setDisable(false);
-					Main.controller.minRanDel.setDisable(false);
-					Main.controller.maxRanDel.setDisable(false);
-					Main.controller.lastSelectedChannel = Main.controller.selectedChannel;
-					Main.controller.selectedChannel = (AudioChannel) Main.controller.channels.getSelectionModel().getSelectedItem();
-					
-					
-					
-					if (Main.controller.lastSelectedChannel != Main.controller.selectedChannel)
+					@Override
+					public void changed(ObservableValue<? extends AudioChannel> observable, AudioChannel oldValue,
+							AudioChannel newValue)
 					{
-						Main.controller.selectedChannel.ingnoreChange = true;
-						Main.controller.audiofiles.getItems().clear();
-						Main.controller.audiofiles.getCheckModel().clearChecks();
-						Main.controller.audiofiles.getItems().addAll(Main.controller.selectedChannel.availableFiles);
-						Main.controller.audiofiles.getCheckModel().clearChecks();
-
-						for (AudioFile file : Main.controller.selectedChannel.getAudioFiles())
+						if (newValue == null)
 						{
-							Main.controller.audiofiles.getCheckModel().check(file.index);
+							Main.controller.audiofiles.setDisable(true);
+							Main.controller.order.setDisable(true);
+							Main.controller.addAudio.setDisable(true);
+							Main.controller.removeAudio.setDisable(true);
+							Main.controller.repeat.setDisable(true);
+							Main.controller.delay.setDisable(true);
+							Main.controller.random.setDisable(true);
+							Main.controller.minRanDel.setDisable(true);
+							Main.controller.maxRanDel.setDisable(true);
+							Main.controller.clearOrder();
+							Main.controller.audiofiles.getItems().clear();
+
 						}
+						if (Main.controller.channels.getSelectionModel().getSelectedItem() != null)
+						{
+							Main.controller.audioPane.setExpanded(true);
+							Main.controller.audiofiles.setDisable(false);
+							Main.controller.order.setDisable(false);
+							Main.controller.addAudio.setDisable(false);
+							Main.controller.removeAudio.setDisable(false);
+							Main.controller.repeat.setDisable(false);
+							Main.controller.delay.setDisable(false);
+							Main.controller.random.setDisable(false);
+							Main.controller.minRanDel.setDisable(false);
+							Main.controller.maxRanDel.setDisable(false);
+							Main.controller.lastSelectedChannel = Main.controller.selectedChannel;
+							Main.controller.selectedChannel = (AudioChannel) Main.controller.channels
+									.getSelectionModel().getSelectedItem();
+							
+							Main.controller.delay.getValueFactory().setValue(Main.controller.selectedChannel.getDelay());
+							Main.controller.minRanDel.getValueFactory().setValue(Main.controller.selectedChannel.getMinDelay());
+							Main.controller.maxRanDel.getValueFactory().setValue(Main.controller.selectedChannel.getMaxDelay());
 
-						Main.controller.repeat.setSelected(Main.controller.selectedChannel.isRepeat());
-						
-						Main.controller.random.setSelected(Main.controller.selectedChannel.isRandom());
-						
-						
+							if (Main.controller.lastSelectedChannel != Main.controller.selectedChannel)
+							{
+								Main.controller.selectedChannel.ingnoreChange = true;
+								Main.controller.audiofiles.getItems().clear();
+								Main.controller.audiofiles.getCheckModel().clearChecks();
+								Main.controller.audiofiles.getItems()
+										.addAll(Main.controller.selectedChannel.availableFiles);
+								Main.controller.audiofiles.getCheckModel().clearChecks();
 
-						Main.controller.refreshOrder();
+								for (AudioFile file : Main.controller.selectedChannel.getAudioFiles())
+								{
+									Main.controller.audiofiles.getCheckModel().check(file.index);
+								}
 
-						Main.controller.selectedChannel.ingnoreChange = false;
+								Main.controller.repeat.setSelected(Main.controller.selectedChannel.isRepeat());
+
+								Main.controller.random.setSelected(Main.controller.selectedChannel.isRandom());
+
+								Main.controller.refreshOrder();
+
+								Main.controller.selectedChannel.ingnoreChange = false;
+							}
+
+						}
 					}
+				});
 
-				}
-			}
-		});
-		
 		Main.controller.delay.valueProperty().addListener(new ChangeListener<Number>()
 		{
 			public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val)
@@ -168,9 +172,13 @@ public class Main extends Application
 				{
 					Main.controller.selectedChannel.setDelay((double) new_val);
 				}
+				if ((double) new_val < 0)
+				{
+					Main.controller.delay.getValueFactory().setValue(0.0);
+				}
 			}
 		});
-		
+
 		Main.controller.minRanDel.valueProperty().addListener(new ChangeListener<Number>()
 		{
 			public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val)
@@ -178,10 +186,18 @@ public class Main extends Application
 				if (Main.controller.selectedChannel != null)
 				{
 					Main.controller.selectedChannel.setMinDelay((double) new_val);
+					if ((double) Main.controller.maxRanDel.getValue() < (double) new_val)
+					{
+						Main.controller.maxRanDel.getValueFactory().setValue(new_val);
+					}
+					if ((double) new_val < 0)
+					{
+						Main.controller.minRanDel.getValueFactory().setValue(0.0);
+					}
 				}
 			}
 		});
-		
+
 		Main.controller.maxRanDel.valueProperty().addListener(new ChangeListener<Number>()
 		{
 			public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val)
@@ -189,6 +205,14 @@ public class Main extends Application
 				if (Main.controller.selectedChannel != null)
 				{
 					Main.controller.selectedChannel.setMaxDelay((double) new_val);
+				}
+				if ((double) new_val < (double) Main.controller.minRanDel.getValue())
+				{
+					Main.controller.maxRanDel.getValueFactory().setValue((double) Main.controller.minRanDel.getValue());
+				}
+				if ((double) new_val < 0)
+				{
+					Main.controller.maxRanDel.getValueFactory().setValue(0.0);
 				}
 			}
 		});
@@ -212,18 +236,19 @@ public class Main extends Application
 			}
 		});
 
-		Main.controller.accordion.expandedPaneProperty().addListener((ObservableValue<? extends TitledPane> observable, TitledPane oldPane, TitledPane newPane) ->
-		{
+		Main.controller.accordion.expandedPaneProperty().addListener(
+				(ObservableValue<? extends TitledPane> observable, TitledPane oldPane, TitledPane newPane) ->
+				{
 
-			if (oldPane != null && oldPane == Main.controller.audioPane)
-			{
-				Main.controller.buttonPane.setExpanded(true);
-			}
-			if (oldPane != null && oldPane == Main.controller.buttonPane)
-			{
-				Main.controller.audioPane.setExpanded(true);
-			}
-		});
+					if (oldPane != null && oldPane == Main.controller.audioPane)
+					{
+						Main.controller.buttonPane.setExpanded(true);
+					}
+					if (oldPane != null && oldPane == Main.controller.buttonPane)
+					{
+						Main.controller.audioPane.setExpanded(true);
+					}
+				});
 
 		for (int i = 0; i <= 11; i++)
 		{

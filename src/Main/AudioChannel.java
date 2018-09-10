@@ -207,8 +207,10 @@ public class AudioChannel
 		if (this.availableFiles.size() > 0)
 			arr2 = ConfigHandler.arrayToStringAudioFile(this.availableFiles, "|||");
 
-		return "AudioChannel [Repeat=" + this.repeat + seperator + " Name=" + name + seperator + " Volume=" + this.volume + seperator + " Delay=" + this.delay + seperator + " AudioFiles=" + arr1 + seperator + " AvailableFiles=" + arr2
-				+ seperator + " minRanDel=" + minDelay + seperator + " maxRanDel=" + maxDelay + seperator + " doRandom=" + repeatDelay + "]";
+		return "AudioChannel [Repeat=" + this.repeat + seperator + " Name=" + name + seperator + " Volume="
+				+ this.volume + seperator + " Delay=" + this.delay + seperator + " AudioFiles=" + arr1 + seperator
+				+ " AvailableFiles=" + arr2 + seperator + " minRanDel=" + minDelay + seperator + " maxRanDel="
+				+ maxDelay + seperator + " doRandom=" + repeatDelay + "]";
 	}
 
 	public AudioChannel(String data, String seperator)
@@ -227,6 +229,10 @@ public class AudioChannel
 		minDelay = Double.parseDouble(arr.get(6).split("=")[1]);
 		maxDelay = Double.parseDouble(arr.get(7).split("=")[1]);
 		repeatDelay = ConfigHandler.getBool(arr.get(8).split("=")[1]);
+
+		System.out.println(minDelay);
+
+		System.out.println(maxDelay);
 
 	}
 
