@@ -10,9 +10,11 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.util.Duration;
+import su.litvak.chromecast.api.v2.ChromeCast;
 
 public class AudioChannel
 {
+	private boolean isCasting;
 	private boolean isPlaying;
 	private boolean repeat; // Save
 	private boolean repeatDelay; // Add Save
@@ -27,6 +29,7 @@ public class AudioChannel
 	ArrayList<MediaPlayer> players;
 	boolean ingnoreChange;
 	boolean isPaused;
+	ChromeCast castdev;
 
 	public AudioChannel(String name)
 	{
@@ -36,6 +39,7 @@ public class AudioChannel
 	// plays the sound once
 	public void playSound()
 	{
+		
 		Platform.runLater(new Runnable()
 		{
 
@@ -51,66 +55,77 @@ public class AudioChannel
 					players.add(player);
 
 				}
-
-				media = new MediaView(players.get(0));
-				// mediaview1 = new MediaView(players.get(0));
-				for (int j = 0; j < players.size(); j++)
+				if (!players.isEmpty())
 				{
-					final MediaPlayer player = players.get(j);
-					final MediaPlayer nextPlayer = players.get((j + 1) % players.size());
+					
+					media = new MediaView(players.get(0));
+					// mediaview1 = new MediaView(players.get(0));
+					for (int j = 0; j < players.size(); j++)
+					{
+						final MediaPlayer player = players.get(j);
+						final MediaPlayer nextPlayer = players.get((j + 1) % players.size());
 
-					player.setOnPlaying(new Runnable()
-					{
-						@Override
-						public void run()
+						player.setOnPlaying(new Runnable()
 						{
-							System.out.println("Running");
-						}
-					});
-					nextPlayer.setOnPlaying(new Runnable()
-					{
-						@Override
-						public void run()
-						{
-							System.out.println("Running");
-						}
-					});
-
-					player.setOnEndOfMedia(new Runnable()
-					{
-						@Override
-						public void run()
-						{
-							if (repeat)
+							@Override
+							public void run()
 							{
-								nextPlayer.seek(Duration.ZERO);
+								System.out.println("Running");
 							}
-							System.out.println("Before ran");
-							if (repeatDelay)
+						});
+						nextPlayer.setOnPlaying(new Runnable()
+						{
+							@Override
+							public void run()
 							{
-								Random rand = new Random();
-								double randomValue = minDelay + (maxDelay - minDelay) * rand.nextDouble();
-
-								try
-								{
-									Thread.sleep((long) randomValue * 1000);
-								}
-								catch (InterruptedException e)
-								{
-									e.printStackTrace();
-								}
+								System.out.println("Running");
 							}
-							media.setMediaPlayer(nextPlayer);
-							nextPlayer.play();
-							System.out.println("Next");
+						});
 
-						}
-					});
+						player.setOnEndOfMedia(new Runnable()
+						{
+							@Override
+							public void run()
+							{
+								if (repeat)
+								{
+									try
+									{
+										Thread.sleep((long) delay * 1000);
+									}
+									catch (InterruptedException e)
+									{
+										e.printStackTrace();
+									}
+									nextPlayer.seek(Duration.ZERO);
+								}
+								System.out.println("Before ran");
+								if (repeatDelay)
+								{
+									Random rand = new Random();
+									double randomValue = minDelay + (maxDelay - minDelay) * rand.nextDouble();
 
+									try
+									{
+										Thread.sleep((long) randomValue * 1000);
+									}
+									catch (InterruptedException e)
+									{
+										e.printStackTrace();
+									}
+								}
+								media.setMediaPlayer(nextPlayer);
+								nextPlayer.play();
+								System.out.println("Next");
+
+							}
+						});
+
+					}
+					media.setMediaPlayer(players.get(0));
+					media.getMediaPlayer().play();
+					
 				}
-				media.setMediaPlayer(players.get(0));
-				media.getMediaPlayer().play();
-
 			}
 		});
 	}
@@ -229,11 +244,6 @@ public class AudioChannel
 		minDelay = Double.parseDouble(arr.get(6).split("=")[1]);
 		maxDelay = Double.parseDouble(arr.get(7).split("=")[1]);
 		repeatDelay = ConfigHandler.getBool(arr.get(8).split("=")[1]);
-
-		System.out.println(minDelay);
-
-		System.out.println(maxDelay);
-
 	}
 
 	public double getMinDelay()
@@ -264,5 +274,15 @@ public class AudioChannel
 	public boolean isRandom()
 	{
 		return repeatDelay;
+	}
+
+	public boolean isCasting()
+	{
+		return isCasting;
+	}
+
+	public void setCasting(boolean isCasting)
+	{
+		this.isCasting = isCasting;
 	}
 }

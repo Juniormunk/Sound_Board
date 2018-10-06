@@ -14,3 +14,19 @@
 	-fx-color:  #4a9be8;
 	-fx-control-inner-background:  #9e9e9e
 }
+
+#cast-button-disabled {
+    -fx-image: url("main/ic_cast_blue_24dp.png");
+}
+
+#cast-button-disabled:hover {
+    -fx-image: url("main/ic_cast_grey_24dp.png");
+}
+
+#cast-button-enabled {
+    -fx-image: url("main/ic_cast_connected_blue_24dp.png");
+}
+
+#cast-button-enabled:hover {
+    -fx-image: url("main/ic_cast_connected_grey_24dp.png");
+}

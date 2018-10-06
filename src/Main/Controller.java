@@ -2,13 +2,17 @@ package Main;
 
 import java.io.File;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.controlsfx.control.CheckListView;
+import org.controlsfx.dialog.ProgressDialog;
 
 import javafx.application.Platform;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Accordion;
@@ -16,15 +20,19 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.TitledPane;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import su.litvak.chromecast.api.v2.ChromeCast;
+import su.litvak.chromecast.api.v2.ChromeCasts;
 
 public class Controller
 {
@@ -93,6 +101,9 @@ public class Controller
 	@FXML
 	TitledPane buttonPane;
 
+	@FXML
+	ImageView cast;
+
 	boolean isopen = false;
 
 	@FXML
@@ -101,6 +112,99 @@ public class Controller
 	ArrayList<AudioFile> list = new ArrayList<AudioFile>();
 
 	File saveFile = null;
+
+	@FXML
+	void castbuttonclick(MouseEvent event)
+	{
+		try
+		{
+			ChromeCasts.startDiscovery();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+
+		Service<Void> service = new Service<Void>()
+		{
+			@Override
+			protected Task<Void> createTask()
+			{
+				return new Task<Void>()
+				{
+					@Override
+					protected Void call() throws InterruptedException
+					{
+						updateMessage("Searching For Chromecasts . . .");
+						updateProgress(0, 10);
+						for (int i = 0; i < 10; i++)
+						{
+							Thread.sleep(500);
+							updateProgress(i + 1, 10);
+							updateMessage("Found " + ChromeCasts.get().size() + " Chromecasts!");
+						}
+						updateMessage("Found all.");
+						return null;
+					}
+				};
+			}
+		};
+
+		ProgressDialog dialong = new ProgressDialog(service);
+		service.start();
+
+		dialong.showAndWait();
+		List<Chromecast> choices = new ArrayList<>();
+
+		for (ChromeCast cc : ChromeCasts.get())
+		{
+			choices.add(new Chromecast(cc.getTitle(), cc.getAddress(), cc.getPort()));
+		}
+		if (!ChromeCasts.get().isEmpty())
+		{
+			ChoiceDialog<Chromecast> dialog = new ChoiceDialog<>(choices.get(0), choices);
+			dialog.setTitle("Chromecasts");
+			dialog.setHeaderText("");
+			dialog.setContentText("Choose your Chromecast:");
+
+			// Traditional way to get the response value.
+			Optional<Chromecast> result = dialog.showAndWait();
+
+			// The Java 8 way to get the response value (with lambda expression).
+
+			result.ifPresent(cc ->
+			{
+				for (ChromeCast cc1 : ChromeCasts.get())
+				{
+					// cc (Chromecast) is the not real ChromeCast class
+					if (cc.title.equals(cc1.getTitle()) && cc.address.equals(cc1.getAddress())
+							&& cc.port == cc1.getPort())
+					{
+						try
+						{
+							
+							Main.controller.selectedChannel.castdev = cc1;
+							Main.controller.selectedChannel.castdev.connect();
+							Main.controller.selectedChannel.setCasting(true);
+							Main.controller.setCast(true);
+						}
+						catch (IOException | GeneralSecurityException e)
+						{
+							e.printStackTrace();
+						}
+
+					}
+				}
+			});
+		}
+		else
+		{
+			Alert alert = new Alert(AlertType.WARNING);
+			alert.setTitle("Warning!");
+			alert.setContentText("No Chromecasts were found!");
+			alert.showAndWait();
+		}
+	}
 
 	@SuppressWarnings("unchecked")
 	@FXML
@@ -201,7 +305,9 @@ public class Controller
 		audiofiles.getItems().addAll(selectedChannel.availableFiles);
 		for (AudioFile file : Main.controller.selectedChannel.getAudioFiles())
 		{
+
 			Main.controller.audiofiles.getCheckModel().check(file.index);
+
 		}
 	}
 
@@ -307,9 +413,9 @@ public class Controller
 			AudioFile selectedFile = (AudioFile) Main.controller.audiofiles.getSelectionModel().getSelectedItem();
 
 			Main.controller.audiofiles.getItems().clear();
-			Main.controller.audiofiles.getCheckModel().clearChecks();
+			audioFilesDeselect();
 			Main.controller.audiofiles.getItems().addAll(selectedChannel.availableFiles);
-			Main.controller.audiofiles.getCheckModel().clearChecks();
+			audioFilesDeselect();
 
 			for (AudioFile file : Main.controller.selectedChannel.getAudioFiles())
 			{
@@ -393,6 +499,40 @@ public class Controller
 				e.printStackTrace();
 			}
 		}
+		else
+		{
+			FileChooser fileChooser = new FileChooser();
+
+			fileChooser.setTitle("Save As");
+
+			ExtensionFilter filter = new FileChooser.ExtensionFilter("Properties File", "*.properties");
+			fileChooser.getExtensionFilters().add(filter);
+			File file = fileChooser.showSaveDialog(Main.stage);
+
+			if (file != null)
+			{
+				try
+				{
+					file.createNewFile();
+				}
+				catch (IOException e1)
+				{
+					e1.printStackTrace();
+				}
+				try
+				{
+					ConfigHandler handle = new ConfigHandler(file, true);
+
+					handle.save();
+					saveFile = file;
+
+				}
+				catch (IOException e)
+				{
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 	@FXML
@@ -400,21 +540,22 @@ public class Controller
 	{
 		FileChooser fileChooser = new FileChooser();
 
-		fileChooser.setTitle("Open Resource File");
+		fileChooser.setTitle("Save As");
 
 		ExtensionFilter filter = new FileChooser.ExtensionFilter("Properties File", "*.properties");
 		fileChooser.getExtensionFilters().add(filter);
 		File file = fileChooser.showSaveDialog(Main.stage);
-		try
-		{
-			file.createNewFile();
-		}
-		catch (IOException e1)
-		{
-			e1.printStackTrace();
-		}
+
 		if (file != null)
 		{
+			try
+			{
+				file.createNewFile();
+			}
+			catch (IOException e1)
+			{
+				e1.printStackTrace();
+			}
 			try
 			{
 				ConfigHandler handle = new ConfigHandler(file, true);
@@ -434,6 +575,7 @@ public class Controller
 	void close(ActionEvent event)
 	{
 		Platform.exit();
+		System.exit(0);
 	}
 
 	@FXML
@@ -449,12 +591,18 @@ public class Controller
 		}
 		for (AudioChannel channel : Main.audioChannels)
 		{
-			channel.media.getMediaPlayer().stop();
-			channel.setPlaying(false);
+			if (channel != null)
+			{
+				if (channel.media != null)
+				{
+					channel.media.getMediaPlayer().stop();
+					channel.setPlaying(false);
+				}
+			}
 		}
 		FileChooser fileChooser = new FileChooser();
 
-		fileChooser.setTitle("Open Resource File");
+		fileChooser.setTitle("Open Save");
 
 		ExtensionFilter filter = new FileChooser.ExtensionFilter("Properties File", "*.properties");
 		fileChooser.getExtensionFilters().add(filter);
@@ -466,6 +614,7 @@ public class Controller
 			{
 				ConfigHandler handle = new ConfigHandler(file, false);
 				handle.load();
+				saveFile = file;
 				for (Pane audio : Main.audioButtons)
 				{
 
@@ -488,9 +637,21 @@ public class Controller
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("About");
 		alert.setHeaderText(null);
-		alert.setContentText("Created By: Cameron Coesens\nVersion: 1.0");
+		alert.setContentText("Created By: Cameron Coesens\nVersion: 2.0");
 
 		alert.showAndWait();
+	}
+
+	void setCast(boolean isCasting)
+	{
+		if (isCasting)
+		{
+			Main.controller.cast.setId("cast-button-enabled");
+		}
+		else
+		{
+			Main.controller.cast.setId("cast-button-disabled");
+		}
 	}
 
 }

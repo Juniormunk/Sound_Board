@@ -1,6 +1,8 @@
 
 package Main;
 
+import java.io.File;
+
 import java.util.ArrayList;
 
 import javafx.application.Application;
@@ -11,14 +13,18 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import su.litvak.chromecast.api.v2.ChromeCast;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TitledPane;
+import javafx.scene.control.cell.CheckBoxListCell;
+import javafx.scene.paint.Color;
 
 public class Main extends Application
 {
 	public static Stage stage;
 	public static ArrayList<AudioChannel> audioChannels = new ArrayList<AudioChannel>();
 	public static Controller controller;
+	public static ChromeCast castdev;
 
 	public static ArrayList<Pane> audioButtons = new ArrayList<Pane>();
 
@@ -84,6 +90,33 @@ public class Main extends Application
 			}
 		});
 
+		Main.controller.audiofiles.setCellFactory(
+				listView -> new CheckBoxListCell<AudioFile>(Main.controller.audiofiles::getItemBooleanProperty)
+				{
+					public void updateItem(AudioFile file, boolean empty)
+					{
+
+						if (file != null)
+						{
+
+							String directoryPath = "";
+							directoryPath = file.getPath();
+							directoryPath = directoryPath.replace("file:\\", "");
+							boolean check = new File(directoryPath).exists();
+							System.out.println(check);
+							if (!check)
+							{
+								System.out.println("umm");
+								this.setTextFill(Color.RED);
+							}
+							setText(file.toString());
+						}
+
+						super.updateItem(file, empty);
+
+					}
+				});
+
 		Main.controller.volume.valueProperty().addListener(new ChangeListener<Number>()
 		{
 			public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val)
@@ -113,6 +146,8 @@ public class Main extends Application
 							Main.controller.random.setDisable(true);
 							Main.controller.minRanDel.setDisable(true);
 							Main.controller.maxRanDel.setDisable(true);
+							Main.controller.setCast(false);
+							Main.controller.cast.setDisable(true);
 							Main.controller.clearOrder();
 							Main.controller.audiofiles.getItems().clear();
 
@@ -129,13 +164,17 @@ public class Main extends Application
 							Main.controller.random.setDisable(false);
 							Main.controller.minRanDel.setDisable(false);
 							Main.controller.maxRanDel.setDisable(false);
+							Main.controller.cast.setDisable(false);
 							Main.controller.lastSelectedChannel = Main.controller.selectedChannel;
 							Main.controller.selectedChannel = (AudioChannel) Main.controller.channels
 									.getSelectionModel().getSelectedItem();
-							
-							Main.controller.delay.getValueFactory().setValue(Main.controller.selectedChannel.getDelay());
-							Main.controller.minRanDel.getValueFactory().setValue(Main.controller.selectedChannel.getMinDelay());
-							Main.controller.maxRanDel.getValueFactory().setValue(Main.controller.selectedChannel.getMaxDelay());
+
+							Main.controller.delay.getValueFactory()
+									.setValue(Main.controller.selectedChannel.getDelay());
+							Main.controller.minRanDel.getValueFactory()
+									.setValue(Main.controller.selectedChannel.getMinDelay());
+							Main.controller.maxRanDel.getValueFactory()
+									.setValue(Main.controller.selectedChannel.getMaxDelay());
 
 							if (Main.controller.lastSelectedChannel != Main.controller.selectedChannel)
 							{
@@ -158,6 +197,8 @@ public class Main extends Application
 								Main.controller.refreshOrder();
 
 								Main.controller.selectedChannel.ingnoreChange = false;
+
+								Main.controller.setCast(Main.controller.selectedChannel.isCasting());
 							}
 
 						}

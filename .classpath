@@ -9,5 +9,11 @@
 	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
 	<classpathentry kind="lib" path="sources/controlsfx-8.40.14.jar"/>
 	<classpathentry kind="lib" path="sources/gson-2.8.5.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cameron/Documents/api-v2-0.10.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cameron/Documents/http-20070405.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cameron/Documents/jackson-all-1.9.9.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cameron/Documents/jmdns-3.5.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cameron/Documents/protobuf-java-2.6.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Cameron/Documents/slf4j-api-1.8.0-beta2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
